@@ -4,6 +4,7 @@ import webbrowser
 
 from backend.mathematics.singles import simpson as trap_simpson
 from backend.utilities.string import StringHandler
+from backend.mathematics.logic import Diferencial
 from os import name
 from sys import version_info, exit
 from screeninfo import get_monitors
@@ -146,7 +147,7 @@ class UI(Frame):
         self.btn_nepper = Button(self.frame_operacoes_linha_5, command=self.listener_btn_nepper, text='e', width=WIDTH_OPER)
         self.btn_nepper_exp = Button(self.frame_operacoes_linha_5, command=self.listener_btn_exp_nepper, text='e^', width=WIDTH_OPER)
         self.btn_log_nepper = Button(self.frame_operacoes_linha_5, command=self.listener_btn_log_nepper, text='ln(x)', width=WIDTH_OPER)
-        self.btn_aaa = Button(self.frame_operacoes_linha_5, command=self.listener_btn_exp_nepper, text='(x)', width=WIDTH_OPER)
+        self.btn_abs = Button(self.frame_operacoes_linha_5, command=self.listener_btn_abs, text='Abs(x)', width=WIDTH_OPER)
 
         self.frame_operacoes.pack( side=Tk.TOP )
         self.lbl_operations.pack(side=Tk.LEFT, fill=Tk.BOTH)
@@ -179,7 +180,7 @@ class UI(Frame):
         self.btn_nepper.pack(side=Tk.LEFT, fill=Tk.BOTH)
         self.btn_nepper_exp.pack(side=Tk.LEFT, fill=Tk.BOTH)
         self.btn_log_nepper.pack(side=Tk.LEFT, fill=Tk.BOTH)
-        self.btn_log_a_x.pack(side=Tk.LEFT, fill=Tk.BOTH)
+        self.btn_abs.pack(side=Tk.LEFT, fill=Tk.BOTH)
 
         self.frame_btn_comandos = Frame(master=self.frame_master_row)
         self.btn_resolver = Button(master=self.frame_btn_comandos, text='Resolver', command=self.listener_btn_resolver)
@@ -294,9 +295,10 @@ class UI(Frame):
     #                messagebox.showinfo("Integrate", handler.pretty_ready(str(j)))
                     try:
                         primitiva = integrate(funcao)
+                        integral_calculo_zeros = solve(integrate(funcao).doit())
                         primitiva_pretty = u"\u222B"+"f(x)dx="+handler.pretty_ready(str(primitiva))
+                        messagebox.showinfo("Resultado Primitiva / Integral Definida!", str(primitiva_pretty)+"\nZeros: "+ str(integral_calculo_valor))
                         plot(primitiva, title=primitiva_pretty)
-                        messagebox.showinfo("Resultado Primitiva / Integral Definida!", str(primitiva_pretty))
 
                     except Exception as e:
                         messagebox.showerror("Erro!", "Não foi possivel calcular a integral desta função!\n" + e)
@@ -331,12 +333,29 @@ class UI(Frame):
                     else:
                         messagebox.showerror("Erro!","Preencha os campos de valores inferior e superior!")
 
-                #Integral Simpson
+                #Integral Simpson (Valor)
                 elif cb_index == 5:
                     valor_inferior = 0
-                    valor_superior = 2
-                    precisao = 0.1
-                    resultado_calculo = trap_simpson(valor_inferior, valor_superior, 0.1)
+                    valor_superior = 100
+
+                    total_subintervalos=int(100)
+#                    integral_valor = integral_valor.as_sum(total_subintervalos).n(100)
+
+#                    e = Integral("1/sqrt(x)", (x, 0, 1)).as_sum(10, evaluate=True).n(4)
+                    diferencial=Diferencial()
+
+                    try:
+                        if valor_inferior == None and valor_superior == None:
+                            valor = diferencial.Intergral_Valor(funcao)
+                        else:
+                            valor = diferencial.Intergral_Valor(funcao, 0, 1)
+                        messagebox.showinfo("Resultado Integral!", "Valor: "+ str(valor))
+                    except Exception as err:
+                        print(err)
+#                    messagebox.showinfo("Resultado Integral!", "Valor: "+ str(integral_valor))
+
+                    precisao = 64
+                    resultado_calculo = trap_simpson(valor_inferior, valor_superior, precisao)
                     resultado_integral , resultado_intervalo = resultado_calculo
 
                     messagebox.showinfo("Integral Algoritmo Simpson", 
@@ -563,3 +582,10 @@ class UI(Frame):
             self.tbx_input.insert(END, "*ln(x)")
         else:
             self.tbx_input.insert(END, "ln(x)")
+    """
+    def listener_btn_abs(self):
+        if (len(self.tbx_input.get('1.0', END))-1>0):
+            self.tbx_input.insert(END, "*Abs(x)")
+        else:
+            self.tbx_input.insert(END, "Abs(x)")
+    """
