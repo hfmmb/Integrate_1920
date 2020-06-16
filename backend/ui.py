@@ -4,6 +4,7 @@ import webbrowser
 
 from backend.mathematics.singles import simpson as trap_simpson
 from backend.utilities.string import StringHandler
+from os import name
 from sys import version_info, exit
 from screeninfo import get_monitors
 from sympy import S, Symbol, Derivative, Integral, Limit, sin, cos, tan, cot, sinh, cosh, cot, plot, solve, diff, integrate, ln, plot_implicit, evalf, SympifyError, symbols, lambdify
@@ -390,8 +391,11 @@ class UI(Frame):
 
     def listener_btn_info(self):
         path = str(pathlib.Path(__file__).parent.absolute().parent)
+        if "nt" in name:
+            path = path + '\manual.html'
+        else:
+            path = path + '/manual.html'
         
-        path = path+'/docs/docs.html'
         try:
             try:
                 webbrowser.open_new_tab(path)
