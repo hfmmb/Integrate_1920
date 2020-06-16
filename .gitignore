@@ -1,0 +1,7 @@
+__pycache__/
+build/
+dist/
+redist/
+.vscode/
+main.spec
+integrate.spec

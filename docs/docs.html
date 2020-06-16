@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Integrate</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="icon" href="icon.png">
+
+
+  <style>
+    .header {
+      background-color: #f1f1f1;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    #navbar {
+      overflow: hidden;
+      background-color: #333;
+    }
+    
+    #navbar a {
+      float: left;
+      display: block;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+    
+    #navbar a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+    
+    #navbar a.active {
+      background-color: #4CAF50;
+      color: white;
+    }
+    
+    .content {
+      padding: 16px;
+    }
+    
+    .sticky {
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
+    
+    .sticky + .content {
+      padding-top: 60px;
+    }
+    </style>
+  
+
+
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0; 
+    }
+    
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 5000px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #c6ffe993;
+      height: 100%;
+    }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;} 
+    }
+
+    .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+
+
+<div class="container-fluid text-center">    
+  <nav class="navbar navbar-inverse;z-index:10000;" id="navbar">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#"><img src="icon.png" style="max-width: 30px;"></a>
+      </div>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#manual">Manual</a></li>
+          <li><a href="#definicoes">Definições</a></li>
+          <li><a href="#simpson">Algoritmo Simpson</a></li>
+          <li><a href="#historia">História</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+    <div class="row content">
+    <div class="col-sm-2 sidenav"></div>
+    <div class="col-sm-8 text-left"> 
+      <hr>
+      <section id="manual">
+          <h2>Manual do programa</h2>
+          <p>Abaixo irão ser mostrados alguns exemplos de funções suportadas pelo programa e qual a formatação a utilizar.</p>
+          <p>O formato utilizado será |Representação matematica| --> |Representações validas no programa|</p>
+          <h4>Polinomial</h4>
+          <p><b>x⁵</b> --> <i>x⁵</i> ou <i>x**5</i> ou <i>x^5</i></p>
+          <p><b>x^(1-x)</b> --> x^(1/x) ou x**(1/x)</p>
+          <p><b>x^(e)</b> --> x^E ou x**E ou x^(E)</p>
+          <p><b>√x</b> --> √(x) ou sqrt(x)</p>
+          <p><b>√(x+3)</b> --> √(x+3) ou sqrt(x+3)</p>
+          <p><b>√3(x)</b> --> root(x, 3)</p>
+          <hr>
+          <h4>Logaritmica</h4>
+          <p><b>log(x)</b> --> log(x)</p>
+          <p><b>ln(x)</b> --> ln(x)</p>
+          <p><b>ln(x-e)</b> --> ln(x-E)</p>
+          <p><b>log(x-1)</b> --> log(x-1)</p>
+          <p><b>log3(5)</b> --> log(3, 5)</p>
+          <p><b>log17(x-5)</b> --> log(17, x-5)</p>
+          <hr>
+          <h4>Trigonometria</h4>
+          <p><b>sen(x)</b> --> sen(x) ou sin(x)</p>
+          <p><b>cos(x)</b> --> cos(x)</p>
+          <p><b>tan(x)</b> --> tg(x) ou tan(x) ou tang(x)</p>
+          <p><b>cotg(x)</b> --> cotg(x) ou cot(x)</p>
+          <p><b>sen(x-2)</b> --> sen(x-2) ou sin(x-2)</p>
+          <p><b>sen(x²)</b> --> sen(x²) ou sin(x**2) ou sin(x^2)</p>
+          <p><b>sen(√x)</b> --> sen(√x) ou sin(√x) ou sen(sqrt(x)) ou sin(sqrt(x))</p>
+          <hr>
+          <h4>Alguns exemplos mais complexos</h4>
+          <p><b>x^(sin(x) - 1-x²)</b> --> x**(sin(x)-1/x**2) ou x^(sin(x)-1/x^2) ou x^(sin(x)-1/x²)</p>
+          <br>
+          <p><b>log(x⁵-2^(tg(-x-1)))+ln(x⁴-5)-2x³+5x²-sen(x)+√2</b> --> log(x⁵-2^(tg(-x-1)))+ln(x⁴-5)-2x³+5x²-sen(x)+√2 ou<br> log(x**5-2**(tg(-x-1)))+ln(x**4-5)-2x**3+5x**2-sen(x)+sqrt(2) ou<br> log(x**5-2**(tg(-x-1)))+ln(x**4-5)-2x**3+5x**2-sen(x)+√2</p>
+          <hr>
+      </section>
+      <section id="definicoes">
+        <h2>Algumas definições</h2>
+        <h3>Derivada</h3>
+        <p><b>Definição:</b> Limite para o qual tende a razão entre o incremento da função e o incremento da variavel quando o ultimo tende para zero.<br>
+          <i style="vertical-align: middle;">-<a href="http://porbase.bnportugal.pt/ipac20/ipac.jsp?menu=search&aspect=basic_search&npp=20&ipp=20&spp=20&profile=porbase&ri=&index=ISBN&term=8496330079&x=12&y=6&aspect=basic_search">Fonte: Grande Enciclopedia Universal Vol. 7</a></i></p>
+        <h3>Integrais</h3>
+          <h4>Indefinidas (Primitivas)</h4>
+          <h4>Definidas</h4>
+        <hr>
+      </section>
+      <section id="simpson">
+        <h2>Algoritmo Simpson</h2>
+        <p>O metodo de Simpson exige que o número de intervalos substitui, em cada dois intervalos, </p>
+      </section>
+      <section id="historia">
+        <h2>História do Calculo Diferencial</h2>
+        <h3>No século XVII</h3>
+
+        <h4>Introdução</h4>
+        <p>O problema de encontrar a tangente de uma curva foi estudado por vários matematicos desde os primeiros estudos efectuados por Arquimedes na Antiguidade. 
+          A primeira tentativa de determinar a tangente de uma curva que se assemelhava ao metodo moderno de Calculo veio de Gilles Persone de Roberval no periodo de 1630 a 1640.
+          Por volta da mesma epoca em que Roberval estava a desenvolver o seu metodo, Pierre de Fermat usou a noção de máxima e a infinitesimal para encontrar a tangente para a curva. 
+          Alguns historiadores creditam Fermat com a descoberta da diferencial, mas não foi ate Leibniz e Newton terem rigorosamente definido o seu metodo de tangentes que uma tecnica generalizada tornou-se grandemente aceite. 
+        </p>
+        <hr>
+
+        <h4>Metodo de Roberval de linhas tangentes usando movimento instantâneo</h4>
+        <img src="https://prabook.com/web/show-photo.jpg?id=1567867" alt="Gilles Persone de Roberval" style="float:right; max-width: 150px; max-height: 250px;">
+        <p>A ideia principal do metodo de Roberval de determinar a tangente de uma curva era a noção de movimento instantâneo. Ou seja, 
+          considerando-se o desenho da curva num ponto em movimento, se, em algum ponto da curva os vetores que efectuam o movimento da curva podem ser determinados, entao a tangente é simplesmente a combinação da soma destes vetores.
+        </p>
+        <p>Este metodo foi aplicado por Roberval para encontrar as tangentes das curvas para as quaisl ele foi capaz de determinar os vetores contituentes do movimento num ponto. Para uma parabola, Roberval conseguiu determinar estes vetores, exemplificados abaixo na figura.</p>
+        <img class="center" src="http://www.math.wpi.edu/IQP/BVCalcHist/Image83.gif">
+        <p class="center">Depicção do grafico de uma parabola mostrando o movimento constituente dos vetores V1 e V2 num ponto P. Roberval determinou que num ponto P de um parabola, existem dois vetores que indicam o valor do seu movimento instantâneo. O vetor V1, que esta na mesma direção da linha juntando o foco da parabola no ponto S e o ponto P. O outro vetor indicando o movimento instantâneo (V2) é perpendicular ao eixo y, sendo este a directriz ou a reta perpendicular a linha da intesecção da parabola. A tangente do grafico no ponto P é simplesmente a soma dos vetores V = V1 + V2.</p>
+        <p>Utilizando esta metodologia, Roberval foi capaz de encontrar as tangentes de numerosas outras curvas incluindo elipses e cicloides, no entanto, encontrar os vetores descrevendo o movimento instantaneo num ponto mostrou-se dificil para um grande numero de curvas. Roberval nunca foi capaz de generalizar este metodo e por essa razão existe historicamente apenas como o precursos do metodo de encontrar tangentes com o auxilio de infinitesimais desenvolvido por Edwards mais tarde.</p>
+        <hr>
+
+        <h4>Maxima e Tangente de Fermat</h4>
+        <img src="https://3.bp.blogspot.com/-DM710hbcM74/UYFi6BL4T-I/AAAAAAAAASs/81AZnQyuBXY/s1600/pierre_fermat.jpg" alt="Pierre de Fermat" style="float: right;; max-width:150px; max-height: 250px;">
+        <p>O metodo de encontrar a tangente foi desenvolvido em 1630 por Pierre De Fermat e apesar de nunca ter sido rigorosamente formulado, este assemelha-se bastante aos metodos utilizados por Newton e Leibniz. Tendo em falta um conceito formal de limite, Fermat não foi capaz de justificar propriamente o seu trabalho, no entanto, ao examinar as suas metodologias, é aparente que este compreendia com grande dominio, o metodo usado para diferenciar nos dias de hoje.</p>
+        <p>De modo a entender o metodo de Fermat, é preciso em primeiro lugar compreender a tecnica utilizada por este de modo a encontrar a maxima. 
+          O primeiro problema documentado por Fermat em diferenciação envolve encontrar o maximo de uma equação, ficando aparente que foi graças a esta descoberta que este conseguiu depois desenvolver o seu metodo relativo a encontrar as tangentes. 
+        </p>
+        <p>O problema consistia em dividir um segmento de uma reta em dois segmentos de forma a que o produto dos dois novos segmentos fosse um maximo.</p>
+        <img class="center" src="http://www.math.wpi.edu/IQP/BVCalcHist/Image84.gif">
+        <p>Uma reta de tamanho 'a' é dividida em dois segmentos, esses dois segmentos sao 'x' e (a-x). O objetivo seguinte era maximizar o produto x (a - x). Apesar da sua forma de resolver na altura ser relativamente misteriosa sem o conceito atual de limite, nos dias de hoje, tendo estes em mente, o seu metodo é relativamente simples de compreender. O que Fermat fez foi substituir cada valor de x com x + E e estipulou que quando a maxima fosse encontrada, x e x + E seriam iguais. Obtendo a equação:</p>
+        <p>x(a - x) = (x + E)(a - x - E)</p>
+        <p>Atraves da simplificação de ambos os membros da equação e cancelamento de termos, Fermat reduziu-a para:</p>
+        <img class="center" src="http://www.math.wpi.edu/IQP/BVCalcHist/Image85.gif">
+        <p>Feito isto, atribui-se a E o valor de 0, ficando assim com:</p>
+        <img class="center" src="http://www.math.wpi.edu/IQP/BVCalcHist/Image86.gif">
+        <p>Isto indica que para maximizar o produto de dois segmentos, cada comprimento das semi-retas deve ser metade do total tamanho da reta, apesar deste resultado ser correto, o metodo contêm varias lacunas de informação que podem ser apenas retificadas pelo conhecimento atual, Fermat simplesmente faz com que E = 0 o que faz com que quando existem divisões por E, ocorram divisões por zero. 
+          However, though Fermat formulated his method by saying E = 0, he was actually considering the limit of E as it approaches zero (which explains why his algebra works properly). Fermat's method of extrema can be understood in modern terms as well. By substituting x + E for x, he is saying that f(x+E) = f(x), or that f(x+E) - f(x) = 0. Since f(x) is a polynomial, this expression will be divisible by E. Therefore, Fermat's method can be understood as the definition of the derivative (when used for finding extrema):</p>
+        <img class="center" src="http://www.math.wpi.edu/IQP/BVCalcHist/Image87.gif">
+        <p>Although Fermat was never able to make a logically consistent formulation, his work can be interpreted as the definition of the differential (Edwards 122-125).</p>
+        <p>Using his mysterious E, Fermat went on to develop a method for finding tangents to curves. Consider the graph of a parabola.</p>
+        <img class="center" src="http://www.math.wpi.edu/IQP/BVCalcHist/Image88.gif">
+        <p>Fermat wishes to find a general formula for the tangent to f(x). In order to do so, he draws the tangent line at a point x and will consider a point a distance E away. As can be seen from Figure 2.3, by similar triangles, the following relationship exists:</p>
+        <img class="center" src="http://www.math.wpi.edu/IQP/BVCalcHist/Image89.gif">
+        <p>By isolating s, Fermat found that</p>
+        <img class="center" src="http://www.math.wpi.edu/IQP/BVCalcHist/Image90.gif">
+        <p>Fermat again lets the quantity E = 0 (in modern term, he took the limit as E approached 0) and recognized that the bottom portion of the equation was identical to his differential in his method of mimina. Consequently, in order to find the slope of a curve, all he needed to do was find f(x)/s. For example, consider the equation <img src="http://www.math.wpi.edu/IQP/BVCalcHist/Image91.gif"> </p>
+        <img class="center" src="http://www.math.wpi.edu/IQP/BVCalcHist/Image92.gif">
+        <p>Again, Fermat lets E=0 and finds that:</p>
+        <img class="center" src="http://www.math.wpi.edu/IQP/BVCalcHist/Image93.gif">
+        <p>Now, returning to the original equation:</p>
+        <img class="center" src="http://www.math.wpi.edu/IQP/BVCalcHist/Image94.gif">
+        <p>Here the modern notation for the derivative f'(x) is used, which Fermat recognized to be equal to [f(x+E) - f(x)]/E when he let E=0. Using this method, Fermat was able to derive a general rule for the tangent to a function to be . As described in the Integration section, Fermat had now developed a general rule for polynomial differentiation and integration. However, he never managed to see the inverse relationship between the two operations, and the logical inconsistencies in his justification left his work fairly unrecognized. It was not until Newton and Leibniz that this formulation became possible (Boyer 155-159).</p>
+        <h4>Newton and Leibniz</h4>
+        <p>Newton and Leibniz served to complete three major necessities in the development of the Calculus. First, though differentiation and integration techniques had already been researched, they were the first to explain an "algorithmic process" for each operation. Second, despite the fact that differentiation and integration had already been discovered by Fermat, Newton and Leibniz recognized their usefulness as a general process. That is, those before Newton and Leibniz had considered solutions to area and tangent problems as specific solutions to particular problems. No one before them recognized the usefulness of the Calculus as a general mathematical tool. Third, though a recognition of differentiation and integration being inverse processes had occurred in earlier work, Newton and Leibniz were the first to explicitly pronounce and rigorously prove it (Dubbey 53-54).</p>
+        <p>Newton and Leibniz both approached the Calculus with different notations and different methodologies. The two men spent the latter part of their life in a dispute over who was responsible for inventing the Calculus and accusing each other of plagiarism. Though the names Newton and Leibniz are associated with the invention of the Calculus, it is clear that the fundamental development had already been forged by others. Though generalizing the techniques and explicitly showing the Fundamental Theorem of Calculus was no small feat, the mathematics involved in their methods are similar to those who came before them. Sufficiently similar are their methods that the specifics of their methodologies are beyond the scope of this paper. In terms of their mathematics, it is only their demonstration of the Fundamental Theorem of Calculus that will be discussed.</p>
+        <h4>The Ellusive Inverses – the Integral and Differential</h4>
+        <p>The notation of Leibniz most closely resembles that which is used in modern calculus and his approach to discovering the inverse relationship between the integral and differential will be examined. Though Newton independently arrived at the same conclusion, his path to discovery is slightly less accessible to the modern reader.</p>
+        <p>Leibniz defined the differential as being</p>
+        <img class="center" src="http://www.math.wpi.edu/IQP/BVCalcHist/Image39.gif">
+        <p>From the earlier works of Cavalieri, Leibniz was already familiar with the techniques of finding the area underneath a curve. Leibniz discovered the inverse relationship between the area and derivative by utilizing his definition of the differential.</p>
+        <p>Consider the graph of the equation y = x2+1:</p>
+        <img class="center" src="http://www.math.wpi.edu/IQP/BVCalcHist/Image139.gif">
+        <p>Leibniz’s idea was to use his differential on the area-function of the graph. Consider adding a D (area) underneath the graph of the curve. The D (area) is defined by the lower rectangle PQRS with area is y(D x) plus a fraction of the upper rectangle SRUT whose area is simply D x(D y). In other words, D (area) lies somewhere in between y(D x) and the total enclosing rectangle PQUT whose area is (y + D y )(D x). Leibniz then considered the ratio D (area)/ D x and saw that since the D (area) is between y(D x) and (y + D y)(D x) the ratio will be between y and (y + D y). From the diagram, it can be seen that D x and D y are closely related to each other. That is, as D x approaches 0 so too does D y. That means that the ratio D (area)/ D x lies between y and a value that approaches y (since y + D y approaches y as D y goes to 0). Written in terms of Leibniz’s definition of the derivative:</p>
+        <img class="center" src="http://www.math.wpi.edu/IQP/BVCalcHist/Image40.gif">
+        <p>Leibniz has shown the inverse relationship between the differential and the area-function. Namely that the differential of the area-function of a function y is equal to the function itself. In this case, the derivative of the area-function of y = x2+1 is indeed y = x2+1.</p>
+        <p>Leibniz’s influence in the history of the integral spreads beyond finding this groundbreaking relationship. He was also responsible for inventing the notation that is used by most students of calculus today. Leibniz used the symbol ò (which was simply how "S" was written at the time) to denote an infinite number of sums. This was closely related to what he called the "integral", or the sum of a number of infinitely small areas. The area underneath a function y, or integral of y, was expressed as òy (dx).</p>
+        <p>What Leibniz’s notation was really saying was to sum up all of the areas dx * y as dx approached 0. As dx approaches 0, there are an infinite number of such areas, hence the symbolism ò representing an infinite number of sums. Integration of this kind is also known as the indefinite integral or anti-derivative due to the inverse relationship found by Leibniz. That is, the derivative of the indefinite integral of a function yields the function itself. . Leibniz also developed a notation for definite integrals, or integrals which produced the area underneath a curve between two bounding values (rather than a symbolic answer). His notation for the definite integral was to supply the lower and upper-bounding x-values with the integral symbol:</p>
+        <img class="center" src="http://www.math.wpi.edu/IQP/BVCalcHist/Image41.gif">
+        <p>Where A is the area-function produced by the anti-derivative. The area function A was computed by using Wallis’ law.</p>
+        <i><a href="http://www.math.wpi.edu/IQP/BVCalcHist/calc2.html">-Fonte</a></i>
+      </section>
+
+    </div>
+    <div class="col-sm-2 sidenav"></div>
+  </div>
+</div>
+
+<script src="docs.js"></script>
+</body>
+<footer class="container-fluid text-center">
+  <p><script>document.write(new Date().getFullYear())</script>
+    © Hélder Filipe M. de M. Braga</p>
+</footer>
+</html>
