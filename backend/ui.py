@@ -32,19 +32,24 @@ class UI(Frame):
 
         Frame.__init__(self, master)
 
-        self.master.wm_title("Derivação e Integração")
+        self.master.wm_title("Integrate - Derivação e Integração")
+        self.master.wm_iconphoto(False, Tk.PhotoImage(file="./icon.png"))
+
         #Obtem resolução do ecra atual
         resolution = get_monitors()
-        screen_width = round(0.5 * resolution[0].width)
-        screen_height = round(0.3 * resolution[0].height)
+        screen_width = resolution[0].width
+        screen_height = resolution[0].height
+
+        window_width = round(0.50 * screen_width)
+        window_height = round(0.28 * screen_height)
 
         #Aplica a resolução a janela
-        resolution = str(screen_width) + 'x' + str(screen_height)
+        resolution = str(window_width) + 'x' + str(window_height)
         master.geometry(resolution)
 
         # Gets both half the screen width/height and window width/height
-        positionRight = int(screen_width/5 - master.winfo_reqwidth()/5)
-        positionDown = int(screen_height/3 - master.winfo_reqheight()/3)
+        positionRight = int((screen_width)*0.25)
+        positionDown = int((screen_height)*0.65)
 
         # Positions the window in the center of the page.
         master.geometry("+{}+{}".format(positionRight, positionDown))
@@ -61,7 +66,7 @@ class UI(Frame):
         self.frame_input_funcao = Frame(master=self.frame_master_row, highlightbackground="black", highlightthickness=1)
         self.frame_input_funcao.pack( side = Tk.TOP )
         self.lbl_function = Label(self.frame_input_funcao, text="f(x)= ", font=fonte)
-        self.tbx_input = Text(self.frame_input_funcao, height=2, width=50, font=fonte)
+        self.tbx_input = Text(self.frame_input_funcao, height=2, width=60, font=fonte)
         self.btn_apagar = Button(master=self.frame_input_funcao, command=self.listener_btn_apagar, text='Apagar')
         self.lbl_function.pack(side=Tk.LEFT)
         self.tbx_input.insert(END, funcao_text)
@@ -82,7 +87,6 @@ class UI(Frame):
         self.lbl_modo.pack(side=Tk.LEFT)
         self.cb_modo.pack(side=Tk.LEFT)
 
-
         #Reta tangente há função
         self.frame_reta_tangente = Frame(master=self.frame_modo, highlightbackground="black", highlightthickness=1)
         self.chkbx_reta_toggle_state = IntVar()
@@ -101,7 +105,7 @@ class UI(Frame):
         self.chkbx_reta_tg.pack( side=Tk.LEFT )
 
         #Contem os campos de input das integrais definidas com intervalo
-        self.frame_integrais_definidas = Frame(master=self.frame_modo, width=20, height=10)
+        self.frame_integrais_definidas = Frame(master=self.frame_modo, highlightbackground="black", highlightthickness=1, width=20, height=10)
         self.frame_integrais_definidas_linha_1 = Frame(master=self.frame_integrais_definidas)
         self.frame_integrais_definidas_linha_2 = Frame(master=self.frame_integrais_definidas)
         self.lbl_input_inferior = Label(self.frame_integrais_definidas_linha_1, text="Limite inferior (a): ")
@@ -111,7 +115,7 @@ class UI(Frame):
 
         #Operações trigonometria, raizes, soma, sub, etc...
         WIDTH_OPER=8
-        self.frame_operacoes = Frame(master=self.frame_master_row, highlightbackground="black", highlightthickness=1)
+        self.frame_operacoes = Frame(master=self.frame_master_row, highlightbackground="black", highlightthickness=1, padx=4, pady=6)
         self.lbl_operations = Label(self.frame_operacoes, text="Operações: ")
 
         self.frame_operacoes_linha_1 = Frame(master=self.frame_operacoes)
@@ -142,7 +146,7 @@ class UI(Frame):
         self.btn_nepper = Button(self.frame_operacoes_linha_5, command=self.listener_btn_nepper, text='e', width=WIDTH_OPER)
         self.btn_nepper_exp = Button(self.frame_operacoes_linha_5, command=self.listener_btn_exp_nepper, text='e^', width=WIDTH_OPER)
         self.btn_log_nepper = Button(self.frame_operacoes_linha_5, command=self.listener_btn_log_nepper, text='ln(x)', width=WIDTH_OPER)
-        self.btn_log_a_x = Button(self.frame_operacoes_linha_5, command=self.listener_btn_log_a_x, text='(x)', width=WIDTH_OPER)
+        self.btn_aaa = Button(self.frame_operacoes_linha_5, command=self.listener_btn_exp_nepper, text='(x)', width=WIDTH_OPER)
 
         self.frame_operacoes.pack( side=Tk.TOP )
         self.lbl_operations.pack(side=Tk.LEFT, fill=Tk.BOTH)
@@ -188,7 +192,7 @@ class UI(Frame):
         self.btn_sair.pack(side=Tk.TOP, fill=Tk.BOTH)
 
         #Contem os campos de input do calculo de limites
-        self.frame_limite = Frame(master=self.frame_modo, width=20, height=10)
+        self.frame_limite = Frame(master=self.frame_modo, highlightbackground="black", highlightthickness=1, width=20, height=10)
         self.frame_sinal_limite = Frame(master=self.frame_limite)
         self.frame_valor_limite = Frame(master=self.frame_limite)
         self.lbl_input_sinal_limite = Label(self.frame_sinal_limite, text="Sinal: ")
@@ -351,8 +355,7 @@ class UI(Frame):
                 #Limites
                 elif cb_index == 7:
 #                    print(solve(Limit(funcao, x, S.Infinity).doit(), dict=True))
-                    plot(funcao, title=funcao)
-                    plot(Limit(funcao, x, S.Infinity).doit(), title=Limit(funcao, x, S.Infinity))
+                    #plot(funcao, title=funcao)
 
                     valor_tendencia_limite = str(self.tbx_input_valor_limite.get("1.0", END))
                     if valor_tendencia_limite == '00' or valor_tendencia_limite == '+00':
@@ -372,9 +375,12 @@ class UI(Frame):
 
                         limite = None
                         if sinal == None:
-                            limite = str(Limit(funcao, x, valor_tendencia_limite).doit())
-                            messagebox.showinfo("Limite da função", 
-                                                "O limite da função é: "+ str(limite))
+                            try:
+                                limite = solve(Limit(funcao, x, valor_tendencia_limite).doit())
+                                messagebox.showinfo("Limite da função", 
+                                                    "O limite da função para x->"+valor_tendencia_limite+"é: "+ str(limite))
+                            except Exception:
+                                messagebox.showerror("Erro!", "Não foi possivel calcular o limite de x->"+valor_tendencia_limite+" para a função dada!")                                
                         else:
                             try:
                                 limite = Limit(funcao, x, valor_tendencia_limite , dir=sinal).doit()
@@ -382,6 +388,8 @@ class UI(Frame):
                                                     "O limite à "+mensagem+" ("+sinal+") da função é: "+ str(limite))
                             except Exception as e:
                                 messagebox.showerror("Erro!", "Não foi possivel calcular o limite à "+mensagem+" ("+sinal+") para a função dada!")
+                    plot(Limit(funcao, x, valor_tendencia_limite).doit(), title=Limit(funcao, x, valor_tendencia_limite))
+
         except Exception:
             messagebox.showerror("ERRO!", "Não foi possivel resolver a expressao inserida, está bem escrita?")
 
