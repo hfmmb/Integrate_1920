@@ -2,13 +2,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 import sympy as s
+from sympy import lambdify
+
 
 def func(x):
-    x = s.Symbol('x')
-    func = "sin(x)"
-    f=s.lambdify(x,func)
-    return f
-#    return (x - 3) * (x - 5) * (x - 7) + 85
+#    x = s.Symbol('x')
+#    func = "x**2+2*x"
+#    f=s.lambdify(x,func)
+#    return f
+    expressao = s.sympify("x**3+2*x")
+    a = lambdify(x, expressao, "numpy")
+    return a
+    return (x - 3) * (x - 5) * (x - 7) + 85
 
 a, b = 2, 9  # integral limits
 x = np.linspace(0, 10)

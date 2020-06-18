@@ -8,10 +8,8 @@ from backend.mathematics.logic import Diferencial
 from os import name
 from sys import version_info, exit
 from screeninfo import get_monitors
-from sympy import S, Symbol, Derivative, Integral, Limit, sin, cos, tan, cot, sinh, cosh, cot, plot, solve, diff, integrate, ln, plot_implicit, evalf, SympifyError, symbols, lambdify
-
-
-#from decimal import Decimal, DecimalException
+from sympy import S, Symbol, Derivative, Integral, Limit, sin, cos, tan, cot, sinh, cosh, cot, plot, solve, diff, integrate, ln, plot_implicit, evalf, SympifyError, symbols, lambdify, pprint
+import matplotlib.pyplot as plt
 
 if version_info[0] < 3:
     import Tkinter as Tk
@@ -41,8 +39,8 @@ class UI(Frame):
         screen_width = resolution[0].width
         screen_height = resolution[0].height
 
-        window_width = round(0.50 * screen_width)
-        window_height = round(0.28 * screen_height)
+        window_width = round(0.66 * screen_width)
+        window_height = round(0.30 * screen_height)
 
         #Aplica a resolução a janela
         resolution = str(window_width) + 'x' + str(window_height)
@@ -64,10 +62,26 @@ class UI(Frame):
         self.frame_master_row = Frame(master=self.master, highlightbackground="black", highlightthickness=2)
         self.frame_master_row.pack(side = Tk.TOP)
 
+#        self.master = Frame(master=self.master, highlightbackground="black", highlightthickness=2)
+#        self.master.pack(side = Tk.TOP)
+
+#        from PIL import Image, ImageTk
+
+#        IMAGE_PATH = '01.jpg'
+#        WIDTH, HEIGTH = 600, 600
+
+#        self.frame_master_row = Tk.Canvas(master=self.master, width=WIDTH, height=HEIGTH)
+#        self.frame_master_row.pack(side = Tk.TOP)
+
+#        img = ImageTk.PhotoImage(Image.open(IMAGE_PATH).resize((window_width, window_height), Image.ANTIALIAS))
+#        self.frame_master_row.background = img  # Keep a reference in case this code is put in a function.
+#        bg = self.frame_master_row.create_image(0, 0, anchor=Tk.NW, image=img)
+
+
         self.frame_input_funcao = Frame(master=self.frame_master_row, highlightbackground="black", highlightthickness=1)
         self.frame_input_funcao.pack( side = Tk.TOP )
         self.lbl_function = Label(self.frame_input_funcao, text="f(x)= ", font=fonte)
-        self.tbx_input = Text(self.frame_input_funcao, height=2, width=60, font=fonte)
+        self.tbx_input = Text(self.frame_input_funcao, height=2, width=70, font=fonte)
         self.btn_apagar = Button(master=self.frame_input_funcao, command=self.listener_btn_apagar, text='Apagar')
         self.lbl_function.pack(side=Tk.LEFT)
         self.tbx_input.insert(END, funcao_text)
@@ -147,7 +161,7 @@ class UI(Frame):
         self.btn_nepper = Button(self.frame_operacoes_linha_5, command=self.listener_btn_nepper, text='e', width=WIDTH_OPER)
         self.btn_nepper_exp = Button(self.frame_operacoes_linha_5, command=self.listener_btn_exp_nepper, text='e^', width=WIDTH_OPER)
         self.btn_log_nepper = Button(self.frame_operacoes_linha_5, command=self.listener_btn_log_nepper, text='ln(x)', width=WIDTH_OPER)
-        self.btn_abs = Button(self.frame_operacoes_linha_5, command=self.listener_btn_abs, text='Abs(x)', width=WIDTH_OPER)
+        self.btn_pi = Button(self.frame_operacoes_linha_5, command=self.listener_btn_pi, text='Abs(x)', width=WIDTH_OPER)
 
         self.frame_operacoes.pack( side=Tk.TOP )
         self.lbl_operations.pack(side=Tk.LEFT, fill=Tk.BOTH)
@@ -180,7 +194,7 @@ class UI(Frame):
         self.btn_nepper.pack(side=Tk.LEFT, fill=Tk.BOTH)
         self.btn_nepper_exp.pack(side=Tk.LEFT, fill=Tk.BOTH)
         self.btn_log_nepper.pack(side=Tk.LEFT, fill=Tk.BOTH)
-        self.btn_abs.pack(side=Tk.LEFT, fill=Tk.BOTH)
+        self.btn_pi.pack(side=Tk.LEFT, fill=Tk.BOTH)
 
         self.frame_btn_comandos = Frame(master=self.frame_master_row)
         self.btn_resolver = Button(master=self.frame_btn_comandos, text='Resolver', command=self.listener_btn_resolver)
@@ -210,23 +224,18 @@ class UI(Frame):
     #Event Listeners
     def listener_btn_resolver(self):
         try:
-            cb_index = self.cb_modo.current()
-            x, y = symbols('x y', real=True)
 
-
-            if(len(self.get_txb_input_text())<=1):
+            if(len(self.get_txb_input_text()) <= 1):
                 messagebox.showerror("Erro!", "Escreva a função na caixa de texto!")
             else:
-                    
+                cb_index = self.cb_modo.current()
+                x, y = symbols('x y', real=True)
+                d = Diferencial()        
                 handler = StringHandler()
                 funcao = handler.process_ready(str(self.get_txb_input_text()))
 
                 #f(x)
                 if cb_index == 0:
-                    funcao_pretty = "f(x)="+ handler.pretty_ready(funcao)
-                    funcao_plot = plot(funcao, title=funcao_pretty, show=False)
-                    funcao_plot.legend=True
-                    funcao_plot[0].label=funcao_pretty
 
                     #Reta tangente no ponto da função
                     if self.chkbx_reta_toggle_state.get() == 1:
@@ -235,44 +244,25 @@ class UI(Frame):
                             coordenada_y = None
                             try:
                                 coordenada_x = float(self.tbx_reta_tangente_x.get("1.0",END))
-                            except Exception:
-                                messagebox.showerror("Erro","O valor da coordenada x não é valido!")
+                            except Exception as e:
+                                messagebox.showerror("Erro","O valor da coordenada x não é valido!\n\n"+ str(e))
                             try:
                                 coordenada_y = float(self.tbx_reta_tangente_y.get("1.0",END))
-                            except Exception:
-                                messagebox.showerror("Erro","O valor da coordenada y não é valido!")
-                            m, a, b = symbols("m a b")
-                            #Obtem a derivada da funcao
-                            funcao_deriv = diff(funcao)
-                            funcao_deriv = str(funcao_deriv)
-                            #Tranforma a funcao em ordem a "m" para obter o declive
-                            funcao_deriv = funcao_deriv + "-y"
-                            g=lambdify((x, y), funcao_deriv)
-                            #Substitui as coordenadas do ponto na funcao
-                            m_value=g(float(coordenada_x), float(coordenada_y))
+                            except Exception as e:
+                                messagebox.showerror("Erro","O valor da coordenada y não é valido!\n\n"+ str(e))
 
-                            print("Derivada: ", funcao_deriv)
-                            print("m=", m_value)
+                            if coordenada_x != None and coordenada_y != None:
+                                d.retaTangentePonto(funcao, coordenada_x, coordenada_y, show_tangente=True)
+                            else:
+                                messagebox.showerror("Erro","Não foi possivel calcular a reta tangente no ponto!")
 
-
-                            f_r_tangente = lambdify((m, x, a, b), "m*(x-a)-b")
-                            f_final = f_r_tangente(m_value, x, float(coordenada_x), float(coordenada_y))
-                            reta_tangente = str(f_final)
-                            
-#                            sp.plot(str(f_final))
-
-                            reta_tangente_pretty = "Reta tangente no ponto ("+str(coordenada_x)+", "+str(coordenada_y)+") de f(x)="+handler.pretty_ready(reta_tangente)
-                            funcao_deriv_plot = plot(reta_tangente, show=False)
-                            funcao_plot.append(funcao_deriv_plot[0])
-                            funcao_plot[1].label=reta_tangente_pretty
-                            funcao_plot[1].line_color = 'firebrick'
-
-                            print("Reta tangente: ", reta_tangente)
-
-                        except Exception:
-                            messagebox.showerror("Erro!", "Não foi possivel calcular a reta tangente no ponto ("+str(coordenada_x)+", "+str(coordenada_y)+") da funçao inserida!")
-
-                    funcao_plot.show()
+                        except Exception as e:
+                            messagebox.showerror("Erro!", 
+                                                "Não foi possivel calcular a reta tangente no ponto ("
+                                                +str(coordenada_x)+", "+str(coordenada_y)+") da funçao inserida!\n\n" + str(e))
+                    #Função
+                    else:
+                        d.retaTangentePonto(funcao)
 
                 #f'(x)
                 elif cb_index == 1:
@@ -292,12 +282,12 @@ class UI(Frame):
 
                 #Integral sem intervalos (Indefinida) (Primitivas)
                 elif cb_index == 3:
-    #                messagebox.showinfo("Integrate", handler.pretty_ready(str(j)))
+
                     try:
                         primitiva = integrate(funcao)
                         integral_calculo_zeros = solve(integrate(funcao).doit())
                         primitiva_pretty = u"\u222B"+"f(x)dx="+handler.pretty_ready(str(primitiva))
-                        messagebox.showinfo("Resultado Primitiva / Integral Definida!", str(primitiva_pretty)+"\nZeros: "+ str(integral_calculo_valor))
+                        messagebox.showinfo("Resultado Primitiva / Integral Definida!", str(primitiva_pretty)+"\nZeros: "+ str(integral_calculo_zeros))
                         plot(primitiva, title=primitiva_pretty)
 
                     except Exception as e:
@@ -409,8 +399,8 @@ class UI(Frame):
                                 messagebox.showerror("Erro!", "Não foi possivel calcular o limite à "+mensagem+" ("+sinal+") para a função dada!")
                     plot(Limit(funcao, x, valor_tendencia_limite).doit(), title=Limit(funcao, x, valor_tendencia_limite))
 
-        except Exception:
-            messagebox.showerror("ERRO!", "Não foi possivel resolver a expressao inserida, está bem escrita?")
+        except Exception as e:
+            messagebox.showerror("ERRO!", "Não foi possivel resolver a expressao inserida, está bem escrita?\n"+ str(e))
 
     def listener_btn_apagar(self):
         self.tbx_input.delete('1.0', END)
@@ -543,9 +533,9 @@ class UI(Frame):
 
     def listener_btn_raiz_a_x(self):
         if (len(self.tbx_input.get('1.0', END))-1>0):
-            self.tbx_input.insert(END, "*root(a, x)")
+            self.tbx_input.insert(END, "*root(x, 1)")
         else:
-            self.tbx_input.insert(END, "root(a, x)")
+            self.tbx_input.insert(END, "root(x, 1)")
 
     def listener_btn_x(self):
         if (len(self.tbx_input.get('1.0', END))-1>0):
@@ -582,10 +572,9 @@ class UI(Frame):
             self.tbx_input.insert(END, "*ln(x)")
         else:
             self.tbx_input.insert(END, "ln(x)")
-    """
-    def listener_btn_abs(self):
+    
+    def listener_btn_pi(self):
         if (len(self.tbx_input.get('1.0', END))-1>0):
-            self.tbx_input.insert(END, "*Abs(x)")
+            self.tbx_input.insert(END, "*pi")
         else:
-            self.tbx_input.insert(END, "Abs(x)")
-    """
+            self.tbx_input.insert(END, "pi")
