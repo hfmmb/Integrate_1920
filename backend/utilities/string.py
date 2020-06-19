@@ -1,7 +1,13 @@
 class StringHandler(object):
-    PATTERN_DICT = {"gamma":u"\u03B3","sen":"sin", "tg":"tan", "x²":"x**2", "x³":"x**3", 
-                    "x⁴":"x**4", "x⁵":"x**5", "x⁶":"x**6", "x⁷":"x**7", "x⁸":"x**8","x⁹":"x**9", 
-                    "raiz":"sqrt","√":"sqrt", "|":"mod","cotan":"cot","cotg":"cot","^":"**","e":"E"}
+    PATTERN_DICT = {
+                    "gamma":u"\u03B3","sen":"sin", "tg":"tan",
+                    "cotan":"cot", "cotg":"cot", "cosec":"csc", 
+                    "arcsen":"asin", "arcsin":"asin", "arcsec":"acsc",
+                    "x²":"x**2", "x³":"x**3", "x⁴":"x**4", "x⁵":"x**5", 
+                    "x⁶":"x**6", "x⁷":"x**7", "x⁸":"x**8", "x⁹":"x**9", 
+                    "raiz":"sqrt", "√":"sqrt", "|":"mod", "^":"**", "e":"E"
+                    
+                    }
     def __init__(self):
         pass
 

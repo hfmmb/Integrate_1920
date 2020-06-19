@@ -24,8 +24,6 @@ else:
 
 class UI(Frame):
     master=Tk.Tk()
-    reserved_symbol_dict = {'arcsen':'arcsen','arcsin':'arcsen','arccos':'arccos','arctg':'arctg',
-                            'cosen':'cosen'  ,'cosin':'cosen'  ,'cocos':'cocos'}
 
     def __init__(self, master=master):
 
@@ -40,7 +38,7 @@ class UI(Frame):
         screen_height = resolution[0].height
 
         window_width = round(0.66 * screen_width)
-        window_height = round(0.30 * screen_height)
+        window_height = round(0.34 * screen_height)
 
         #Aplica a resolução a janela
         resolution = str(window_width) + 'x' + str(window_height)
@@ -58,7 +56,7 @@ class UI(Frame):
         fonte = Font(family="Helvetica", size=18)
 
         #Frame input função
-        funcao_text = "-6*x⁴+2*log(5*x³)+sen(x²)+sqrt(x)"
+        funcao_text = "-6*x⁴+2*log(5*x³)+sen(x²)+√(x)+5"
         self.frame_master_row = Frame(master=self.master, highlightbackground="black", highlightthickness=2)
         self.frame_master_row.pack(side = Tk.TOP)
 
@@ -92,9 +90,14 @@ class UI(Frame):
         self.frame_modo = Frame(master=self.frame_master_row, highlightbackground="black", highlightthickness=1)
         self.lbl_modo = Label(self.frame_modo, text = "Modo: ")
         self.cb_modo = Combobox(self.frame_modo, state='readonly', font=fonte , 
-            values=[ "f(x)", "f'(x)", "f''(x)", u"\u222B"+" f(x)dx (Indefinida)", 
-                    u"\u222B"+"ab f(x)dx (Definida)" ,u"\u222B"+" f(x)dx Algoritmo Simpson", 
-                    "Minimos e Máximos", "Limite"], width=25)
+            values=[ 
+                "f(x)", 
+                "f'(x)", 
+                "f''(x)", 
+                u"\u222B"+" f(x)dx (Indefinida)", 
+                u"\u222B"+"ab f(x)dx (Definida)" ,
+                u"\u222B"+" f(x)dx Algoritmo Simpson", 
+                "Minimos e Máximos", "Limite"], width=25)
         self.cb_modo.current(0)
         self.cb_modo.bind("<<ComboboxSelected>>", self.listener_cb_modo)
 
@@ -130,7 +133,7 @@ class UI(Frame):
 
         #Operações trigonometria, raizes, soma, sub, etc...
         WIDTH_OPER=8
-        self.frame_operacoes = Frame(master=self.frame_master_row, highlightbackground="black", highlightthickness=1, padx=4, pady=6)
+        self.frame_operacoes = Frame(master=self.frame_master_row, padx=4, pady=6)
         self.lbl_operations = Label(self.frame_operacoes, text="Operações: ")
 
         self.frame_operacoes_linha_1 = Frame(master=self.frame_operacoes)
@@ -142,8 +145,8 @@ class UI(Frame):
         self.frame_operacoes_linha_2 = Frame(master=self.frame_operacoes)
         self.btn_sin = Button(self.frame_operacoes_linha_2, command=self.listener_btn_sin, text='sin(x)', width=WIDTH_OPER)
         self.btn_cos = Button(self.frame_operacoes_linha_2, command=self.listener_btn_cos, text='cos(x)', width=WIDTH_OPER)
-        self.btn_tg = Button(self.frame_operacoes_linha_2, command=self.listener_btn_tg, text='tang(x)', width=WIDTH_OPER)
-        self.btn_cotg = Button(self.frame_operacoes_linha_2, command=self.listener_btn_cotg, text='cotang(x)', width=WIDTH_OPER)
+        self.btn_tg = Button(self.frame_operacoes_linha_2, command=self.listener_btn_tg, text='tan(x)', width=WIDTH_OPER)
+        self.btn_cotg = Button(self.frame_operacoes_linha_2, command=self.listener_btn_cotg, text='cotg(x)', width=WIDTH_OPER)
 
         self.frame_operacoes_linha_3 = Frame(master=self.frame_operacoes)
         self.btn_x_exp_y = Button(self.frame_operacoes_linha_3, command=self.listener_btn_x_exp_y, text='x^', width=WIDTH_OPER)
@@ -161,7 +164,19 @@ class UI(Frame):
         self.btn_nepper = Button(self.frame_operacoes_linha_5, command=self.listener_btn_nepper, text='e', width=WIDTH_OPER)
         self.btn_nepper_exp = Button(self.frame_operacoes_linha_5, command=self.listener_btn_exp_nepper, text='e^', width=WIDTH_OPER)
         self.btn_log_nepper = Button(self.frame_operacoes_linha_5, command=self.listener_btn_log_nepper, text='ln(x)', width=WIDTH_OPER)
-        self.btn_pi = Button(self.frame_operacoes_linha_5, command=self.listener_btn_pi, text='Abs(x)', width=WIDTH_OPER)
+        self.btn_pi = Button(self.frame_operacoes_linha_5, command=self.listener_btn_pi, text='π', width=WIDTH_OPER)
+
+        self.frame_operacoes_linha_6 = Frame(master=self.frame_operacoes)
+        self.btn_secante = Button(self.frame_operacoes_linha_6, command=self.listener_btn_secante, text='sec(x)', width=WIDTH_OPER)
+        self.btn_cosecante = Button(self.frame_operacoes_linha_6, command=self.listener_btn_cosecante, text='cosec(x)', width=WIDTH_OPER)
+        self.btn_arcsen = Button(self.frame_operacoes_linha_6, command=self.listener_btn_arcsen, text='arcsen(x)', width=WIDTH_OPER)
+        self.btn_arccos = Button(self.frame_operacoes_linha_6, command=self.listener_btn_arccos, text='arccos(x)', width=WIDTH_OPER)
+
+        self.frame_operacoes_linha_7 = Frame(master=self.frame_operacoes)
+        self.btn_arctan = Button(self.frame_operacoes_linha_7, command=self.listener_btn_arctan, text='arctan(x)', width=WIDTH_OPER)
+        self.btn_arccotan = Button(self.frame_operacoes_linha_7, command=self.listener_btn_arccotan, text='arccotan(x)', width=WIDTH_OPER)
+        self.btn_arcsecante = Button(self.frame_operacoes_linha_7, command=self.listener_btn_arcsecante, text='arcsec(x)', width=WIDTH_OPER)
+        self.btn_arccosecante = Button(self.frame_operacoes_linha_7, command=self.listener_btn_arccosecante, text='arccosec(x)', width=WIDTH_OPER)
 
         self.frame_operacoes.pack( side=Tk.TOP )
         self.lbl_operations.pack(side=Tk.LEFT, fill=Tk.BOTH)
@@ -196,12 +211,24 @@ class UI(Frame):
         self.btn_log_nepper.pack(side=Tk.LEFT, fill=Tk.BOTH)
         self.btn_pi.pack(side=Tk.LEFT, fill=Tk.BOTH)
 
-        self.frame_btn_comandos = Frame(master=self.frame_master_row)
+        self.frame_operacoes_linha_6.pack(side=Tk.TOP, fill=Tk.BOTH)
+        self.btn_secante.pack(side=Tk.LEFT, fill=Tk.BOTH)
+        self.btn_cosecante.pack(side=Tk.LEFT, fill=Tk.BOTH)
+        self.btn_arcsen.pack(side=Tk.LEFT, fill=Tk.BOTH)
+        self.btn_arccos.pack(side=Tk.LEFT, fill=Tk.BOTH)
+
+        self.frame_operacoes_linha_7.pack(side=Tk.TOP, fill=Tk.BOTH)
+        self.btn_arctan.pack(side=Tk.LEFT, fill=Tk.BOTH)
+        self.btn_arccotan.pack(side=Tk.LEFT, fill=Tk.BOTH)
+        self.btn_arcsecante.pack(side=Tk.LEFT, fill=Tk.BOTH)
+        self.btn_arccosecante.pack(side=Tk.LEFT, fill=Tk.BOTH)
+
+        self.frame_btn_comandos = Frame(master=self.frame_master_row, padx=25, pady=6)
         self.btn_resolver = Button(master=self.frame_btn_comandos, text='Resolver', command=self.listener_btn_resolver)
         self.btn_info = Button(master=self.frame_btn_comandos, command=self.listener_btn_info, text='Info')
         self.btn_sair = Button(master=self.frame_btn_comandos, command=self.listener_btn_sair, text='Sair', )
 
-        self.frame_btn_comandos.pack(side=Tk.TOP)
+        self.frame_btn_comandos.pack(side=Tk.RIGHT)
         self.btn_resolver.pack(side=Tk.TOP, fill=Tk.BOTH)
         self.btn_info.pack(side=Tk.TOP, fill=Tk.BOTH)
         self.btn_sair.pack(side=Tk.TOP, fill=Tk.BOTH)
@@ -236,62 +263,43 @@ class UI(Frame):
 
                 #f(x)
                 if cb_index == 0:
-
-                    #Reta tangente no ponto da função
-                    if self.chkbx_reta_toggle_state.get() == 1:
-                        try:
-                            coordenada_x = None
-                            coordenada_y = None
-                            try:
-                                coordenada_x = float(self.tbx_reta_tangente_x.get("1.0",END))
-                            except Exception as e:
-                                messagebox.showerror("Erro","O valor da coordenada x não é valido!\n\n"+ str(e))
-                            try:
-                                coordenada_y = float(self.tbx_reta_tangente_y.get("1.0",END))
-                            except Exception as e:
-                                messagebox.showerror("Erro","O valor da coordenada y não é valido!\n\n"+ str(e))
-
-                            if coordenada_x != None and coordenada_y != None:
-                                d.retaTangentePonto(funcao, coordenada_x, coordenada_y, show_tangente=True)
-                            else:
-                                messagebox.showerror("Erro","Não foi possivel calcular a reta tangente no ponto!")
-
-                        except Exception as e:
-                            messagebox.showerror("Erro!", 
-                                                "Não foi possivel calcular a reta tangente no ponto ("
-                                                +str(coordenada_x)+", "+str(coordenada_y)+") da funçao inserida!\n\n" + str(e))
-                    #Função
-                    else:
-                        d.retaTangentePonto(funcao)
+                    self.get_coords(funcao)
 
                 #f'(x)
                 elif cb_index == 1:
-                    funcao_deriv = diff(funcao)
-
-                    funcao_deriv_pretty = "f'(x)="+handler.pretty_ready(str(funcao_deriv))
-                    messagebox.showinfo("Derivate", handler.pretty_ready(str(funcao_deriv_pretty)))
-                    funcao_plot = plot(funcao_deriv, title=funcao_deriv_pretty)
+                    try:
+                        derivada = str(d.derivate(funcao))
+                        self.get_coords(derivada)
+                    except Exception as e:
+                        messagebox.showerror("Erro!", 
+                                            "Não foi possivel calcular a primeira derivada da função inserida!\n\n" + str(e))
 
                 #f''(x)
                 elif cb_index == 2:
-                    derivada = diff(funcao)
-
-                    segunda_derivada = diff(derivada)
-                    funcao_segunda_derivada_pretty = "f''(x)="+handler.pretty_ready(str(segunda_derivada))
-                    plot(segunda_derivada, title=funcao_segunda_derivada_pretty)
+                    try:
+                        segunda_derivada = str(d.derivate(funcao, 2))
+                        self.get_coords(segunda_derivada)
+                    except Exception as e:
+                        messagebox.showerror("Erro!", 
+                                            "Não foi possivel calcular a segunda derivada da função inserida!\n\n" + str(e))
 
                 #Integral sem intervalos (Indefinida) (Primitivas)
                 elif cb_index == 3:
 
                     try:
                         primitiva = integrate(funcao)
-                        integral_calculo_zeros = solve(integrate(funcao).doit())
-                        primitiva_pretty = u"\u222B"+"f(x)dx="+handler.pretty_ready(str(primitiva))
-                        messagebox.showinfo("Resultado Primitiva / Integral Definida!", str(primitiva_pretty)+"\nZeros: "+ str(integral_calculo_zeros))
-                        plot(primitiva, title=primitiva_pretty)
+                        d.plotIntegral(primitiva)
 
                     except Exception as e:
-                        messagebox.showerror("Erro!", "Não foi possivel calcular a integral desta função!\n" + e)
+                        messagebox.showerror("Erro!", "Não foi possivel mostrar o grafico da integral desta função!\n\n" + str(e))
+
+                    try:
+                        integral_calculo_zeros = solve(primitiva)
+                        primitiva_pretty = u"\u222B"+"f(x)dx="+handler.pretty_ready(str(primitiva))
+                        messagebox.showinfo("Resultado Primitiva / Integral Definida!", str(primitiva_pretty)+"\nZeros: "+ str(integral_calculo_zeros))
+
+                    except Exception as e:
+                        messagebox.showerror("Erro!", "Não foi possivel calcular a integral desta função!\n" + str(e))
 
                 #Integral com intervalos (definida)
                 elif cb_index == 4:
@@ -355,11 +363,15 @@ class UI(Frame):
                 #Minimos e maximos da função
                 elif cb_index == 6: 
                     try:
-                        solucao = solve(Derivative(funcao, x).doit())
-                        messagebox.showinfo("Minimos e Maximos", "Minimo / Maximo absoluto: " +  str(solucao))
+                        solucao = solve(d.derivate(funcao))
+                        if len(solucao) == 0:
+                            messagebox.showinfo("Minimos e Maximos", "A função não tem minimos nem máximos.")
 
-                    except Exception:
-                        messagebox.showerror("Erro!", "Não foi possivel calcular os minimos e maximos da função!")
+                        else:
+                            messagebox.showinfo("Minimos e Maximos", "Minimo(s) e maximo(s) encontrados: " +  str(solucao).replace(',','\n').replace('[','').replace(']',''))
+
+                    except Exception as e:
+                        messagebox.showerror("Erro!", "Não foi possivel calcular os minimos e maximos da função!\n\n"+str(e))
 
                 #Limites
                 elif cb_index == 7:
@@ -367,52 +379,63 @@ class UI(Frame):
                     #plot(funcao, title=funcao)
 
                     valor_tendencia_limite = str(self.tbx_input_valor_limite.get("1.0", END))
-                    if valor_tendencia_limite == '00' or valor_tendencia_limite == '+00':
-                        valor_tendencia_limite = S.Infinity
-                    elif valor_tendencia_limite == '-00':
-                        valor_tendencia_limite = S.NegativeInfinity
 
                     mensagem = ""
                     sinal = str(self.tbx_input_sinal_limite.get("1.0", END)) #Limite a esquerda ou direita da funcao
-                    if sinal=='+':
+                    sinal = sinal.strip("\n")
+                    if sinal == '+':
                         mensagem = "direita"
-                    elif sinal=='-':
+                    elif sinal == '-':
                         mensagem = "esquerda"
                     else:
                         sinal=None
-                        messagebox.showwarning("Sinal invalido!", "Sinal do limite não definido! (-) esquerda (+) direita.")
+                        messagebox.showwarning("Sinal indefinido!", "Sinal do limite não definido! (-) esquerda (+) direita.")
 
-                        limite = None
-                        if sinal == None:
-                            try:
-                                limite = solve(Limit(funcao, x, valor_tendencia_limite).doit())
-                                messagebox.showinfo("Limite da função", 
-                                                    "O limite da função para x->"+valor_tendencia_limite+"é: "+ str(limite))
-                            except Exception:
-                                messagebox.showerror("Erro!", "Não foi possivel calcular o limite de x->"+valor_tendencia_limite+" para a função dada!")                                
-                        else:
-                            try:
-                                limite = Limit(funcao, x, valor_tendencia_limite , dir=sinal).doit()
-                                messagebox.showinfo("Limite da função à"+mensagem+" ("+sinal+")", 
-                                                    "O limite à "+mensagem+" ("+sinal+") da função é: "+ str(limite))
-                            except Exception as e:
-                                messagebox.showerror("Erro!", "Não foi possivel calcular o limite à "+mensagem+" ("+sinal+") para a função dada!")
-                    plot(Limit(funcao, x, valor_tendencia_limite).doit(), title=Limit(funcao, x, valor_tendencia_limite))
+                    limite = None
+                    if sinal == None:
+                        try:
+                            limite = d.LimiteValor(funcao, valor_tendencia_limite)
+#                            limite = solve(Limit(funcao, x, valor_tendencia_limite).doit())
+                            messagebox.showinfo("Limite da função", 
+                                                "O limite da função para x->"+valor_tendencia_limite+"é: "+ str(limite))
+                        except Exception as e:
+                            messagebox.showerror("Erro!", "Não foi possivel calcular o limite de x->"+valor_tendencia_limite+" para a função dada!\n\n"+e)                                
+                    else:
+                        try:
+#                                limite = Limit(funcao, x, valor_tendencia_limite , dir=sinal).doit()
+                            limite = d.LimiteValor(funcao, valor_tendencia_limite, sinal)
+
+                            messagebox.showinfo("Limite da função à"+mensagem+" ("+sinal+")", 
+                                                "O limite à "+mensagem+" ("+sinal+") da função é: "+ str(limite))
+                        except Exception as e:
+                            messagebox.showerror("Erro!", "Não foi possivel calcular o limite à "+mensagem+" ("+sinal+") para a função dada!")
+                    d.retaTangentePonto(str(Limit(funcao, x, valor_tendencia_limite).doit()))
 
         except Exception as e:
-            messagebox.showerror("ERRO!", "Não foi possivel resolver a expressao inserida, está bem escrita?\n"+ str(e))
+            messagebox.showerror("ERRO!", "Não foi possivel resolver a expressao inserida, está bem escrita?\n\n"+ str(e))
 
     def listener_btn_apagar(self):
         self.tbx_input.delete('1.0', END)
         print('Limpando texto...')
 
     def listener_btn_info(self):
-        path = str(pathlib.Path(__file__).parent.absolute().parent)
-        if "nt" in name:
-            path = path + '\manual.html'
-        else:
-            path = path + '/manual.html'
-        
+
+
+        from pathlib import Path
+        root_folder = Path(__file__).parent.absolute().parent
+        data_folder = Path("man/")
+        data_folder = root_folder / data_folder 
+
+        path = data_folder / "manual.html"
+
+#        path = str(pathlib.Path(__file__).parent.absolute().parent)
+#        if "nt" in name:
+#            path = path + '\\manual.html'
+#        else:
+#            path = path + '/manual.html'
+        print(root_folder)
+        print(path)
+        print(pathlib.Path(__file__).parent.absolute().parent)
         try:
             try:
                 webbrowser.open_new_tab(path)
@@ -431,7 +454,7 @@ class UI(Frame):
         selected_index = self.cb_modo.current()
 
         # f(x) e reta tangente no ponto
-        if(selected_index == 0):
+        if(selected_index < 3):
             self.frame_reta_tangente.pack(side=Tk.LEFT)
             self.chkbx_reta_tg.pack(side=Tk.LEFT)
 
@@ -578,3 +601,95 @@ class UI(Frame):
             self.tbx_input.insert(END, "*pi")
         else:
             self.tbx_input.insert(END, "pi")
+    
+    def listener_btn_arcsen(self):
+        if (len(self.tbx_input.get('1.0', END))-1>0):
+            self.tbx_input.insert(END, "*asin(x)")
+        else:
+            self.tbx_input.insert(END, "asin(x)")
+
+    
+    def listener_btn_arccot(self):
+        if (len(self.tbx_input.get('1.0', END))-1>0):
+            self.tbx_input.insert(END, "*acot(x)")
+        else:
+            self.tbx_input.insert(END, "acot(x)")
+
+    
+    def listener_btn_arctan(self):
+        if (len(self.tbx_input.get('1.0', END))-1>0):
+            self.tbx_input.insert(END, "*atan(x)")
+        else:
+            self.tbx_input.insert(END, "atan(x)")
+
+    def listener_btn_secante(self):
+        if (len(self.tbx_input.get('1.0', END))-1>0):
+            self.tbx_input.insert(END, "*sec(x)")
+        else:
+            self.tbx_input.insert(END, "sec(x)")
+
+    def listener_btn_cosecante(self):
+        if (len(self.tbx_input.get('1.0', END))-1>0):
+            self.tbx_input.insert(END, "*csc(x)")
+        else:
+            self.tbx_input.insert(END, "csc(x)")
+
+    def listener_btn_arccos(self):
+        if (len(self.tbx_input.get('1.0', END))-1>0):
+            self.tbx_input.insert(END, "*acos(x)")
+        else:
+            self.tbx_input.insert(END, "acos(x)")
+
+    
+    def listener_btn_arcsecante(self):
+        if (len(self.tbx_input.get('1.0', END))-1>0):
+            self.tbx_input.insert(END, "*asec(x)")
+        else:
+            self.tbx_input.insert(END, "asec(x)")
+
+    
+    def listener_btn_arccosecante(self):
+        if (len(self.tbx_input.get('1.0', END))-1>0):
+            self.tbx_input.insert(END, "*acsc(x)")
+        else:
+            self.tbx_input.insert(END, "acsc(x)")
+
+    
+    def listener_btn_arccotan(self):
+        if (len(self.tbx_input.get('1.0', END))-1>0):
+            self.tbx_input.insert(END, "*acot(x)")
+        else:
+            self.tbx_input.insert(END, "acot(x)")
+
+    def get_coords(self, funcao, show_tangente=False):
+
+        coordenada_x, coordenada_y = None, None
+        d = Diferencial()
+
+        if self.chkbx_reta_toggle_state.get() == 1:
+            try:
+                try:
+                    coordenada_x = float(self.tbx_reta_tangente_x.get("1.0",END))
+                except Exception as e:
+                    messagebox.showerror("Erro","O valor da coordenada x não é valido!\n\n"+ str(e))
+
+                try:
+                    coordenada_y = float(self.tbx_reta_tangente_y.get("1.0",END))
+                except Exception as e:
+                    messagebox.showerror("Erro","O valor da coordenada y não é valido!\n\n"+ str(e))
+
+                if coordenada_x != None and coordenada_y != None:
+                    validar = d.inFuncao(funcao, coordenada_x, coordenada_y)
+                    if not validar:
+                        messagebox.showwarning("Atenção", "Os pontos inseridos não fazem parte da função!")
+                    else:
+                        d.retaTangentePonto(funcao, coordenada_x, coordenada_y, show_tangente=True)
+                else:
+                    messagebox.showerror("Erro","Não foi possivel calcular a reta tangente no ponto!")
+
+            except Exception as e:
+                messagebox.showerror("Erro!", 
+                                    "Não foi possivel calcular a reta tangente no ponto ("
+                                    +str(coordenada_x)+", "+str(coordenada_y)+") da funçao inserida!\n\n" + str(e))
+        else:
+            d.retaTangentePonto(funcao)
