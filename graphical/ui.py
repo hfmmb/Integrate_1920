@@ -51,22 +51,6 @@ class UI(Frame):
         self.frame_master_row = Frame(master=self.master, highlightbackground="black", highlightthickness=2)
         self.frame_master_row.pack(side = Tk.TOP)
 
-#        self.master = Frame(master=self.master, highlightbackground="black", highlightthickness=2)
-#        self.master.pack(side = Tk.TOP)
-
-#        from PIL import Image, ImageTk
-
-#        IMAGE_PATH = '01.jpg'
-#        WIDTH, HEIGTH = 600, 600
-
-#        self.frame_master_row = Tk.Canvas(master=self.master, width=WIDTH, height=HEIGTH)
-#        self.frame_master_row.pack(side = Tk.TOP)
-
-#        img = ImageTk.PhotoImage(Image.open(IMAGE_PATH).resize((window_width, window_height), Image.ANTIALIAS))
-#        self.frame_master_row.background = img  # Keep a reference in case this code is put in a function.
-#        bg = self.frame_master_row.create_image(0, 0, anchor=Tk.NW, image=img)
-
-
         self.frame_input_funcao = Frame(master=self.frame_master_row, highlightbackground="black", highlightthickness=1)
         self.frame_input_funcao.pack( side = Tk.TOP )
         self.lbl_function = Label(self.frame_input_funcao, text="f(x)= ", font=fonte)
@@ -89,7 +73,7 @@ class UI(Frame):
                 u"\u222B"+"ab f(x)dx (Definida)" ,
                 u"\u222B"+"ab f(x)dx (Imprópria)", 
                 "Minimos e Máximos",
-                "Limite",
+                "Limite (Valor)",
                 u"\u222B"+" f(x)dx (Zeros)"], width=25)
 
         self.cb_modo.current(0)
@@ -370,9 +354,6 @@ class UI(Frame):
 
                 #Limites
                 elif cb_index == 7:
-#                    print(solve(Limit(funcao, x, S.Infinity).doit(), dict=True))
-                    #plot(funcao, title=funcao)
-
                     valor_tendencia_limite = str(self.tbx_input_valor_limite.get("1.0", END))
 
                     mensagem = ""
@@ -390,14 +371,12 @@ class UI(Frame):
                     if sinal == None:
                         try:
                             limite = d.LimiteValor(funcao, valor_tendencia_limite)
-#                            limite = solve(Limit(funcao, x, valor_tendencia_limite).doit())
                             messagebox.showinfo("Limite da função", 
                                                 "O limite da função para x->"+valor_tendencia_limite+"é: "+ str(limite))
                         except Exception as e:
                             messagebox.showerror("Erro!", "Não foi possivel calcular o limite de x->"+valor_tendencia_limite+" para a função dada!\n\n"+str(e))
                     else:
                         try:
-#                                limite = Limit(funcao, x, valor_tendencia_limite , dir=sinal).doit()
                             limite = d.LimiteValor(funcao, valor_tendencia_limite, sinal)
 
                             messagebox.showinfo("Limite da função à"+mensagem+" ("+sinal+")", 
