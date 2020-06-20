@@ -2,34 +2,78 @@ from .standardify import StringHandler
 from tkinter import messagebox
 import sympy.plotting
 
-#from ..utilities.string import StringHandler
 import sympy as s
-import matplotlib
+from sympy import lambdify
+import matplotlib as mt
 import matplotlib.pyplot as mplot
-
+import numpy as np
 class Diferencial(object):
     def __init__(self):
         self.handler = StringHandler()
 
-    def plotIntegral(self, funcao, a=None , b=None, plot_eixo_x_limites=(-10, 10), plot_eixo_y_limites=(-10, 10), pontos=10000):
+    def plotIntegralDefinida(self, funcao, a=1e-32 , b=None, plot_eixo_x_limites=(0, 20), plot_eixo_y_limites=(0, 20)):
+        #Ajusta o eixo x minimo no grafico
+        if(plot_eixo_x_limites[0] < 0):
+            plot_eixo_x_limites[0] = 0
+        #Ajusta o eixo y minimo no grafico
+        if(plot_eixo_y_limites[0] < 0):
+            plot_eixo_y_limites[0] = 0
+
         x, y = s.symbols("x y")
         funcao = s.sympify(funcao)
 
-        integral_plot = s.plot_implicit(y < funcao, (x, plot_eixo_x_limites[0], plot_eixo_x_limites[1]), (y, plot_eixo_x_limites[0], plot_eixo_y_limites[1]), points=pontos, line_color="darkorange", show=False)
-        funcao_latex = self.sympyLatexify(funcao)
-        a=1
-        b= 2
-#        ax.set_xticks((a, b))
-#        ax.set_xticklabels(('$a$', '$b$'))
-        if(a == None or b == None):
-            integral_string = r'\int{}'.format(funcao_latex)
-        else:
-            integral_string = ""
-#            integral_string = r'\int_a^b \! f(x) \, \mathrm{d}x {}'.format(funcao_latex)
 
-        integral_plot.title = f"${integral_string}$"
-#        integral_plot.markers
-        integral_plot.show()
+
+
+        q = np.linspace(0, 10)
+        w = lambdify(x, funcao, "numpy")
+
+        fig, aq = mplot.subplots()
+#        aq.plot(x, y, 'r', linewidth=2)
+        aq.set_ylim(bottom=0)
+
+        # Make the shaded region
+        iq = np.linspace(a, b)
+        iw = w(iq)
+        verts = [(a, 0), *zip(iq, iw), (b, 0)]
+        poly = mt.patches.Polygon(verts, color='darkorange', edgecolor='black')
+        aq.add_patch(poly)
+
+        aq.text(0.5 * (a + b), 30, r"$\int_a^b f(q)\mathrm{d}q$",
+                horizontalalignment='center', fontsize=20)
+
+        fig.text(0.9, 0.05, '$q$')
+        fig.text(0.1, 0.9, '$w$')
+
+        aq.xaxis.set_ticks_position('bottom')
+
+        aq.set_xticks((a, b))
+        aq.set_xticklabels(('$a$'+'='+str(a), '$b$'+'='+str(b)))
+        aq.set_yticks([])
+
+#        integral_plot = s.plot_implicit(y < funcao, (x, plot_eixo_x_limites[0], plot_eixo_x_limites[1]), (y, plot_eixo_y_limites[0], plot_eixo_y_limites[1]), ylim=0, line_color="darkorange", show=False)
+#        reta_a = s.plot(a, show=False, color="crimson")
+#        integral_plot.append(reta_a[0])
+#        integral_plot[1].label="a="+str(a)
+
+#        reta_b = s.plot(b, show=False, color="royalblue")
+#        integral_plot.append(reta_b[0])
+#        integral_plot[2].label="b="+str(b)
+
+        funcao_latex = self.sympyLatexify(funcao)
+#        integral_plot.xticks = ((a, b))
+#        integral_plot.xticklabels = (('$a$', '$b$'))
+        mapa = {'a':str(a), 'b':str(b), 'f':funcao_latex}
+        integral_string = r"\int_{a}^{b} \! f(x) \,".format_map(mapa)
+#        integral_string = r'\int_a^b \! f(x) \, \mathrm{d}x {}'.format(funcao_latex)
+
+#        integral_plot.title = f"${integral_string}$"
+#        mplot.title = f"${integral_string}$"
+        mplot.title(f"${integral_string}$")
+        mplot.xlim(plot_eixo_x_limites[0], plot_eixo_x_limites[1])
+        mplot.ylim(plot_eixo_y_limites[0], plot_eixo_y_limites[1])     
+#        integral_plot.show()
+        mplot.show()
 
     def inFuncao(self, funcao, coord_x, coord_y, margem_erro=0.05):
         """Verifica se um ponto inserido faz parte de uma função tendo em conta uma margem de erro dada

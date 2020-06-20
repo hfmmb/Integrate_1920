@@ -5,3 +5,4 @@ redist/
 .vscode/
 main.spec
 integrate.spec
+Integrate.spec

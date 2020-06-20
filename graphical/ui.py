@@ -37,7 +37,7 @@ class UI(Frame):
 
         # Gets both half the screen width/height and window width/height
         positionRight = int((screen_width)*0.25)
-        positionDown = int((screen_height)*0.65)
+        positionDown = int((screen_height)*0.50)
 
         # Positions the window in the center of the page.
         master.geometry("+{}+{}".format(positionRight, positionDown))
@@ -270,7 +270,6 @@ class UI(Frame):
 
                     try:
                         primitiva = integrate(funcao)
-                        d.plotIntegral(primitiva)
 
                     except Exception as e:
                         messagebox.showerror("Erro!", "Não foi possivel mostrar o grafico da integral desta função!\n\n" + str(e))
@@ -282,23 +281,33 @@ class UI(Frame):
                     valor_inferior_string, valor_superior_string = valor_inferior.strip('\n'), valor_superior.strip('\n')
                     if(len(valor_inferior) > 1 and len(valor_superior) > 1):
                         try:
-                            valor_inferior = int(valor_inferior)
+                            valor_inferior = float(valor_inferior)
 
-                            valor_superior = int(valor_superior)
+                            valor_superior = float(valor_superior)
 
-                            if (valor_inferior_string != "-00") and (valor_superior_string != "00") and (valor_superior_string != "+00"):
-                                if (valor_inferior > valor_superior):
-                                    aux = int(valor_superior)
-                                    valor_superior = int(valor_inferior)
-                                    valor_inferior = int(aux)
+                            if (valor_inferior > valor_superior):
+                                aux = valor_superior
+                                valor_superior = valor_inferior
+                                valor_inferior = aux
 
-                            try:
-                                valor = d.Intergral_Valor(funcao, valor_inferior, valor_superior)
-                                messagebox.showinfo("Resultado Integral!", "Valor: "+ str(valor))
-                            except Exception:
-                                messagebox.showerror("Erro!","Não foi possivel calcular o valor da integral dada no intervalo de limites ["+valor_inferior+", "+valor_superior+"]!")        
-                        except Exception:
-                            messagebox.showerror("Erro!","Apenas numeros são permitidos!")
+                            if valor_inferior < 0:
+                                valor_inferior = 0
+
+                        except Exception as e:
+                            messagebox.showerror("Erro!","Apenas numeros são permitidos!\n\n" + str(e))
+
+                        try:
+                            valor = d.Intergral_Valor(funcao, valor_inferior, valor_superior)
+
+                            messagebox.showinfo("Resultado Integral!", "Valor: "+ str(valor))
+                        except Exception as e:
+                            messagebox.showerror("Erro!","Não foi possivel calcular o valor da integral dada no intervalo de limites ["+str(valor_inferior)+", "+str(valor_superior)+"]!\n\n" + str(e))        
+
+                        try:
+                            d.plotIntegralDefinida(funcao, valor_inferior, valor_superior)
+                        except Exception as e:
+                            messagebox.showerror("Erro!","Não foi possivel mostrar o grafico da integral de valores ["+str(valor_inferior)+", "+str(valor_superior)+"]!\n\n" + str(e))        
+
                     else:
                         messagebox.showerror("Erro!","Preencha os campos de valores inferior e superior!")
 
@@ -406,9 +415,9 @@ class UI(Frame):
 
 
         from pathlib import Path
-        root_folder = Path(__file__).parent.absolute().parent
+#        root_folder = Path(__file__).parent.absolute().parent
         data_folder = Path("man/")
-        data_folder = root_folder / data_folder 
+#        data_folder = root_folder / data_folder 
 
         path = data_folder / "manual.html"
 
