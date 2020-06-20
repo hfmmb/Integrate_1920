@@ -1,6 +1,11 @@
+"""
+Modulo principal do programa, executar para ver o programa em funcionamento
+"""
 from graphical.ui import UI
-from sympy import printing
 def main():
+    """
+    Função principal do programa
+    """
     gui = UI()
 
     gui.mainloop()

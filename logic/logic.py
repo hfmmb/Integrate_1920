@@ -1,8 +1,8 @@
-from sympy.parsing.latex import parse_latex
+from .standardify import StringHandler
 from tkinter import messagebox
 import sympy.plotting
 
-from backend.utilities.string import StringHandler
+#from ..utilities.string import StringHandler
 import sympy as s
 import matplotlib
 import matplotlib.pyplot as mplot
@@ -24,14 +24,14 @@ class Diferencial(object):
         if(a == None or b == None):
             integral_string = r'\int{}'.format(funcao_latex)
         else:
-            integral_string = "VAZIO"
+            integral_string = ""
 #            integral_string = r'\int_a^b \! f(x) \, \mathrm{d}x {}'.format(funcao_latex)
 
         integral_plot.title = f"${integral_string}$"
 #        integral_plot.markers
         integral_plot.show()
 
-    def inFuncao(self, funcao, coord_x, coord_y, margem_erro=0.1):
+    def inFuncao(self, funcao, coord_x, coord_y, margem_erro=0.05):
         """Verifica se um ponto inserido faz parte de uma função tendo em conta uma margem de erro dada
 
         Args:
@@ -124,8 +124,8 @@ class Diferencial(object):
             funcao_plot[1].label=reta_tangente_pretty
             funcao_plot[1].line_color = 'firebrick'
 
-            ponto_tangente = sympy.plot_implicit(sympy.Eq(x**2 +y**2, 4), block = False)
-            funcao_plot.append(ponto_tangente[0])
+#            ponto_tangente = sympy.plot_implicit(sympy.Eq(x**2 +y**2, 4), block = False)
+#            funcao_plot.append(ponto_tangente[0])
 
         funcao_latex = self.sympyLatexify(funcao)
         funcao_plot.title = f"${funcao_latex}$"
@@ -150,22 +150,25 @@ class Diferencial(object):
             float: Retorna o valor do limite se este existe, None se este nao existe
         """
 
-        if valor_tendencia_limite == '00' or valor_tendencia_limite == '+00':
-            valor_tendencia_limite = s.S.Infinity
-        elif valor_tendencia_limite == '-00':
-            valor_tendencia_limite = s.S.NegativeInfinity
-
         x = s.Symbol('x')
         try:
             funcao = s.sympify(funcao)
         except s.SympifyError as e:
             print("Função em formato incorreto:\n", e)
+        try:
+            if(valor_tendencia_limite != "-00" and valor_tendencia_limite != "00" and valor_tendencia_limite != "+00"):
+                valor_tendencia_limite = float(valor_tendencia_limite)
+            
+        except ValueError as e:
+            print("Valor invalido: ", str(e))
+
         #Limite a esquerda da função
         if(sinal=="-"):
             if(funcao.subs(x, valor_tendencia_limite-1e-8).is_real):
                 return s.limit(funcao, x, valor_tendencia_limite, dir=sinal)
             else:
                 return None #Limite não existe
+
         #Limite a direita da função
         elif(sinal=="+"):
             if(funcao.subs(x, valor_tendencia_limite+1e-8).is_real):
@@ -237,4 +240,56 @@ print(dif.LimiteValor("x/Abs(x)", 0, '+'))
 print(dif.LimiteValor("x/Abs(x)", 0))
 
 print(dif.LimiteValor("2000/(1+199*E**(-0.001*E))", s.S.Infinity, "+"))
+"""
+
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def find_nearest(array,value):
+    idx = (np.abs(array-value)).argmin()
+    return array[idx]
+
+# Simple mouse click function to store coordinates
+def onclick(event):
+    global ix, iy
+    ix, iy = event.xdata, event.ydata
+
+    # assign global variable to access outside of function
+    global coords
+    coords.append((ix, iy))
+
+    # Disconnect after 2 clicks
+    if len(coords) == 2:
+        fig.canvas.mpl_disconnect(cid)
+        plt.close(1)
+    return
+
+
+
+
+x, y = s.symbols("x y")
+#ponto_tangente = sympy.plot_implicit(sympy.Eq(x**2 +y**2, 4), block = False)
+
+
+x = np.arange(-10,10)
+y = x**2
+
+fig = plt.figure(1)
+ax = fig.add_subplot(111)
+ax.plot(x,y)
+
+coords = []
+
+# Call click func
+cid = fig.canvas.mpl_connect('button_press_event', onclick)
+
+plt.show(1)
+
+# limits for integration
+ch1 = np.where(x == (find_nearest(x, coords[0][0])))
+ch2 = np.where(x == (find_nearest(x, coords[1][0])))
+
+print ('Integral between '+str(coords[0][0])+ ' & ' +str(coords[1][0]))
 """

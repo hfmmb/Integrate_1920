@@ -1,26 +1,17 @@
-import sympy as s
+import tkinter as Tk
+from tkinter import END, Frame, Button, Text, Label, Canvas, Checkbutton, messagebox, IntVar
+from tkinter.font import Font
+from tkinter.ttk import Combobox
+from sys import version_info, exit
 import pathlib
+import sympy as s
+from sympy import S, Symbol, Integral, Limit, sin, cos, tan, cot, sinh, cosh, cot, plot, solve, diff, integrate, ln, evalf, symbols
 import webbrowser
 
-from backend.mathematics.singles import simpson as trap_simpson
-from backend.utilities.string import StringHandler
-from backend.mathematics.logic import Diferencial
-from os import name
-from sys import version_info, exit
 from screeninfo import get_monitors
-from sympy import S, Symbol, Derivative, Integral, Limit, sin, cos, tan, cot, sinh, cosh, cot, plot, solve, diff, integrate, ln, plot_implicit, evalf, SympifyError, symbols, lambdify, pprint
-import matplotlib.pyplot as plt
-
-if version_info[0] < 3:
-    import Tkinter as Tk
-    from Tkinter import END, Frame, Button, Text, Label, Canvas, Checkbutton, IntVar
-    from tkinter.font import Font
-    from Tkinter.ttk import Combobox, tkMessageBox
-else:
-    import tkinter as Tk
-    from tkinter import END, Frame, Button, Text, Label, Canvas, Checkbutton, messagebox, IntVar
-    from tkinter.font import Font
-    from tkinter.ttk import Combobox
+from logic.logic import Diferencial
+from logic.standardify import StringHandler
+from os import name
 
 class UI(Frame):
     master=Tk.Tk()
@@ -38,7 +29,7 @@ class UI(Frame):
         screen_height = resolution[0].height
 
         window_width = round(0.66 * screen_width)
-        window_height = round(0.34 * screen_height)
+        window_height = round(0.38 * screen_height)
 
         #Aplica a resolução a janela
         resolution = str(window_width) + 'x' + str(window_height)
@@ -56,7 +47,7 @@ class UI(Frame):
         fonte = Font(family="Helvetica", size=18)
 
         #Frame input função
-        funcao_text = "-6*x⁴+2*log(5*x³)+sen(x²)+√(x)+5"
+        funcao_text = "x³/(x²+sen(pi^(x)/2)+ln(E+1)+sqrt(15))"
         self.frame_master_row = Frame(master=self.master, highlightbackground="black", highlightthickness=2)
         self.frame_master_row.pack(side = Tk.TOP)
 
@@ -96,8 +87,11 @@ class UI(Frame):
                 "f''(x)", 
                 u"\u222B"+" f(x)dx (Indefinida)", 
                 u"\u222B"+"ab f(x)dx (Definida)" ,
-                u"\u222B"+" f(x)dx Algoritmo Simpson", 
-                "Minimos e Máximos", "Limite"], width=25)
+                u"\u222B"+"ab f(x)dx (Imprópria)", 
+                "Minimos e Máximos",
+                "Limite",
+                u"\u222B"+" f(x)dx (Zeros)"], width=25)
+
         self.cb_modo.current(0)
         self.cb_modo.bind("<<ComboboxSelected>>", self.listener_cb_modo)
 
@@ -113,11 +107,15 @@ class UI(Frame):
 
         self.frame_reta_tangente_x = Frame(master=self.frame_reta_tangente)
         self.frame_reta_tangente_y = Frame(master=self.frame_reta_tangente)
+        self.frame_reta_tangente_margem_erro = Frame(master=self.frame_reta_tangente)
 
-        self.lbl_reta_tangente_x = Label(self.frame_reta_tangente_x, text="x:")
+        self.lbl_reta_tangente_x = Label(self.frame_reta_tangente_x, text="                  x:")
         self.lbl_reta_tangente_y = Label(self.frame_reta_tangente_y, text="y:")
+        self.lbl_reta_tangente_margem_erro = Label(self.frame_reta_tangente_margem_erro, text="Margem erro:")
+
         self.tbx_reta_tangente_x = Text(self.frame_reta_tangente_x, height=1, width=10)
         self.tbx_reta_tangente_y = Text(self.frame_reta_tangente_y, height=1, width=10)
+        self.tbx_reta_tangente_margem_erro = Text(self.frame_reta_tangente_margem_erro, height=1, width=10)
 
         self.frame_reta_tangente.pack( side=Tk.LEFT )        
         self.chkbx_reta_tg.pack( side=Tk.LEFT )
@@ -293,37 +291,26 @@ class UI(Frame):
                     except Exception as e:
                         messagebox.showerror("Erro!", "Não foi possivel mostrar o grafico da integral desta função!\n\n" + str(e))
 
-                    try:
-                        integral_calculo_zeros = solve(primitiva)
-                        primitiva_pretty = u"\u222B"+"f(x)dx="+handler.pretty_ready(str(primitiva))
-                        messagebox.showinfo("Resultado Primitiva / Integral Definida!", str(primitiva_pretty)+"\nZeros: "+ str(integral_calculo_zeros))
-
-                    except Exception as e:
-                        messagebox.showerror("Erro!", "Não foi possivel calcular a integral desta função!\n" + str(e))
-
                 #Integral com intervalos (definida)
                 elif cb_index == 4:
 
                     valor_inferior, valor_superior = str(self.tbx_input_inferior.get("1.0", END)), str(self.tbx_input_superior.get("1.0", END))
+                    valor_inferior_string, valor_superior_string = valor_inferior.strip('\n'), valor_superior.strip('\n')
                     if(len(valor_inferior) > 1 and len(valor_superior) > 1):
                         try:
-                            if valor_inferior != "-00":
-                                valor_inferior = int(valor_inferior)
-                            if valor_superior != "00" and valor_superior != "+00" :
-                                valor_superior = int(valor_superior)
+                            valor_inferior = int(valor_inferior)
 
-                            if(valor_inferior > valor_superior):
-                                aux = int(valor_superior)
-                                valor_superior = int(valor_inferior)
-                                valor_inferior = int(aux)
+                            valor_superior = int(valor_superior)
+
+                            if (valor_inferior_string != "-00") and (valor_superior_string != "00") and (valor_superior_string != "+00"):
+                                if (valor_inferior > valor_superior):
+                                    aux = int(valor_superior)
+                                    valor_superior = int(valor_inferior)
+                                    valor_inferior = int(aux)
+
                             try:
-                                funcao_integral = integrate(funcao, (x, valor_inferior, valor_superior))
-                                integral = str(funcao_integral.doit())
-                                try:
-                                    integral_aproximada = funcao_integral.evalf()
-                                    messagebox.showinfo("Resultado integral definida","O valor da integral calculada é de aproximadamente: "+ str(integral_aproximada))
-                                except Exception:
-                                    messagebox.showinfo("Resultado integral definida","O valor em fracção da integral calculada é de: "+ integral)
+                                valor = d.Intergral_Valor(funcao, valor_inferior, valor_superior)
+                                messagebox.showinfo("Resultado Integral!", "Valor: "+ str(valor))
                             except Exception:
                                 messagebox.showerror("Erro!","Não foi possivel calcular o valor da integral dada no intervalo de limites ["+valor_inferior+", "+valor_superior+"]!")        
                         except Exception:
@@ -331,34 +318,42 @@ class UI(Frame):
                     else:
                         messagebox.showerror("Erro!","Preencha os campos de valores inferior e superior!")
 
-                #Integral Simpson (Valor)
+                #Integrais Impróprias (Valor)
                 elif cb_index == 5:
-                    valor_inferior = 0
-                    valor_superior = 100
 
-                    total_subintervalos=int(100)
-#                    integral_valor = integral_valor.as_sum(total_subintervalos).n(100)
-
-#                    e = Integral("1/sqrt(x)", (x, 0, 1)).as_sum(10, evaluate=True).n(4)
-                    diferencial=Diferencial()
-
-                    try:
-                        if valor_inferior == None and valor_superior == None:
-                            valor = diferencial.Intergral_Valor(funcao)
+                    valor_inferior, valor_superior = str(self.tbx_input_inferior.get("1.0", END)), str(self.tbx_input_superior.get("1.0", END))
+                    valor_inferior_string, valor_superior_string = valor_inferior.strip('\n'), valor_superior.strip('\n')
+                    if(len(valor_inferior) > 1 and len(valor_superior) > 1):
+                        if valor_inferior_string == "-00":
+                            valor_inferior = s.S.NegativeInfinity()
                         else:
-                            valor = diferencial.Intergral_Valor(funcao, 0, 1)
-                        messagebox.showinfo("Resultado Integral!", "Valor: "+ str(valor))
-                    except Exception as err:
-                        print(err)
-#                    messagebox.showinfo("Resultado Integral!", "Valor: "+ str(integral_valor))
+                            valor_inferior = int(valor_inferior)
+                        if valor_superior_string == "00" or valor_superior == "+00" :
+                            valor_inferior = s.S.Infinity()
+                            
+                        else:
+                            valor_superior = int(valor_superior)
 
-                    precisao = 64
-                    resultado_calculo = trap_simpson(valor_inferior, valor_superior, precisao)
-                    resultado_integral , resultado_intervalo = resultado_calculo
+                        case_negative_infinity = valor_inferior_string == "-00" and ((valor_superior_string != "00") and (valor_superior_string != "+00"))
+                        case_positive_infinity = valor_inferior_string != "-00" and ((valor_superior_string == "00") or (valor_superior_string == "+00"))
+                        if case_negative_infinity and case_positive_infinity:
+                            if (valor_inferior > valor_superior):
+                                aux = int(valor_superior)
+                                valor_superior = int(valor_inferior)
+                                valor_inferior = int(aux)
+                        case_all_infinity = valor_inferior_string == "-00" and ((valor_superior_string == "00") or (valor_superior_string == "+00"))
 
-                    messagebox.showinfo("Integral Algoritmo Simpson", 
-                                        "Valor calculado: " + str(resultado_integral)+
-                                        "\n\nIntervalos encontrados: "+ str(resultado_intervalo))
+                        try:
+                            if not case_all_infinity:
+                                valor = d.Intergral_Valor(funcao, valor_inferior, valor_superior)
+                                messagebox.showinfo("Resultado Integral!", "Valor: "+ str(valor))
+                            else:
+                                messagebox.showerror("Erro!","-00 e +00 em ambos os campos dos limites não é permitido! Integral Indefinida!")        
+
+                        except Exception:
+                            messagebox.showerror("Erro!","Não foi possivel calcular o valor da integral dada no intervalo de limites ["+valor_inferior+", "+valor_superior+"]!")        
+                    else:
+                        messagebox.showerror("Erro!","Preencha os campos de valores inferior e superior!")
 
                 #Minimos e maximos da função
                 elif cb_index == 6: 
@@ -368,7 +363,7 @@ class UI(Frame):
                             messagebox.showinfo("Minimos e Maximos", "A função não tem minimos nem máximos.")
 
                         else:
-                            messagebox.showinfo("Minimos e Maximos", "Minimo(s) e maximo(s) encontrados: " +  str(solucao).replace(',','\n').replace('[','').replace(']',''))
+                            messagebox.showinfo("Minimos e Maximos", "Minimo(s) e maximo(s) encontrados: \n" +  str(solucao).replace(',','\n').replace('[','').replace(']',''))
 
                     except Exception as e:
                         messagebox.showerror("Erro!", "Não foi possivel calcular os minimos e maximos da função!\n\n"+str(e))
@@ -399,7 +394,7 @@ class UI(Frame):
                             messagebox.showinfo("Limite da função", 
                                                 "O limite da função para x->"+valor_tendencia_limite+"é: "+ str(limite))
                         except Exception as e:
-                            messagebox.showerror("Erro!", "Não foi possivel calcular o limite de x->"+valor_tendencia_limite+" para a função dada!\n\n"+e)                                
+                            messagebox.showerror("Erro!", "Não foi possivel calcular o limite de x->"+valor_tendencia_limite+" para a função dada!\n\n"+str(e))
                     else:
                         try:
 #                                limite = Limit(funcao, x, valor_tendencia_limite , dir=sinal).doit()
@@ -410,6 +405,16 @@ class UI(Frame):
                         except Exception as e:
                             messagebox.showerror("Erro!", "Não foi possivel calcular o limite à "+mensagem+" ("+sinal+") para a função dada!")
                     d.retaTangentePonto(str(Limit(funcao, x, valor_tendencia_limite).doit()))
+
+                #Zeros integral
+                elif cb_index == 8:
+                        try:
+                            integral_calculo_zeros = solve(primitiva)
+                            primitiva_pretty = u"\u222B"+"f(x)dx="+handler.pretty_ready(str(primitiva))
+                            messagebox.showinfo("Resultado Primitiva / Integral Definida!", str(primitiva_pretty)+"\nZeros: "+ str(integral_calculo_zeros))
+
+                        except Exception as e:
+                            messagebox.showerror("Erro!", "Não foi possivel calcular a integral desta função!\n" + str(e))
 
         except Exception as e:
             messagebox.showerror("ERRO!", "Não foi possivel resolver a expressao inserida, está bem escrita?\n\n"+ str(e))
@@ -428,21 +433,13 @@ class UI(Frame):
 
         path = data_folder / "manual.html"
 
-#        path = str(pathlib.Path(__file__).parent.absolute().parent)
-#        if "nt" in name:
-#            path = path + '\\manual.html'
-#        else:
-#            path = path + '/manual.html'
-        print(root_folder)
-        print(path)
-        print(pathlib.Path(__file__).parent.absolute().parent)
         try:
             try:
-                webbrowser.open_new_tab(path)
-            except Exception :
-                messagebox.showerror("Erro!", "Não foi possivel aceder ao browser do sistema operativo!\n")
+                webbrowser.open_new_tab(str(path))
+            except Exception as e:
+                messagebox.showerror("Erro!", "Não foi possivel aceder ao browser do sistema operativo!\n\n"+str(e))
         except FileNotFoundError as e:
-            messagebox.showerror("Erro!", "Não foi possivel aceder aos ficheiros da documentação!\n" + e)
+            messagebox.showerror("Erro!", "Não foi possivel aceder aos ficheiros da documentação!\n\n" + str(e))
 
     def listener_btn_sair(self):
         exit()
@@ -452,6 +449,7 @@ class UI(Frame):
         Change listener da combobox
         '''
         selected_index = self.cb_modo.current()
+        self.chkbx_reta_tg.deselect()
 
         # f(x) e reta tangente no ponto
         if(selected_index < 3):
@@ -459,7 +457,7 @@ class UI(Frame):
             self.chkbx_reta_tg.pack(side=Tk.LEFT)
 
         #Integral Definida
-        elif(selected_index == 4):
+        elif(selected_index == 4 or selected_index == 5):
             self.frame_integrais_definidas.pack(side=Tk.LEFT)
             self.frame_integrais_definidas_linha_1.pack(side=Tk.TOP, fill=Tk.BOTH)
             self.frame_integrais_definidas_linha_2.pack(side=Tk.TOP, fill=Tk.BOTH)
@@ -494,11 +492,15 @@ class UI(Frame):
             self.lbl_reta_tangente_x.pack(side=Tk.LEFT)
             self.tbx_reta_tangente_x.pack(side=Tk.LEFT)
             self.frame_reta_tangente_y.pack(side=Tk.TOP)
-            self.lbl_reta_tangente_y.pack(side=Tk.LEFT)
-            self.tbx_reta_tangente_y.pack(side=Tk.LEFT)
+            self.lbl_reta_tangente_y.pack(side=Tk.LEFT, fill=Tk.BOTH)
+            self.tbx_reta_tangente_y.pack(side=Tk.RIGHT, fill=Tk.BOTH)
+            self.frame_reta_tangente_margem_erro.pack(side=Tk.TOP)
+            self.lbl_reta_tangente_margem_erro.pack(side=Tk.LEFT)
+            self.tbx_reta_tangente_margem_erro.pack(side=Tk.LEFT)
         else:
             self.frame_reta_tangente_x.pack_forget()
             self.frame_reta_tangente_y.pack_forget()
+            self.frame_reta_tangente_margem_erro.pack_forget()
 
     def listener_btn_x_exp_y(self):
         if (len(self.tbx_input.get('1.0', END))-1>0):
@@ -663,33 +665,49 @@ class UI(Frame):
 
     def get_coords(self, funcao, show_tangente=False):
 
-        coordenada_x, coordenada_y = None, None
         d = Diferencial()
 
         if self.chkbx_reta_toggle_state.get() == 1:
-            try:
-                try:
-                    coordenada_x = float(self.tbx_reta_tangente_x.get("1.0",END))
-                except Exception as e:
-                    messagebox.showerror("Erro","O valor da coordenada x não é valido!\n\n"+ str(e))
+            coordenada_x = self.tbx_reta_tangente_x.get("1.0",END)
+            coordenada_x = coordenada_x.strip('\n')
 
-                try:
-                    coordenada_y = float(self.tbx_reta_tangente_y.get("1.0",END))
-                except Exception as e:
-                    messagebox.showerror("Erro","O valor da coordenada y não é valido!\n\n"+ str(e))
+            coordenada_y = self.tbx_reta_tangente_y.get("1.0",END)
+            coordenada_y = coordenada_y.strip('\n')
 
-                if coordenada_x != None and coordenada_y != None:
-                    validar = d.inFuncao(funcao, coordenada_x, coordenada_y)
+            margem_erro = self.tbx_reta_tangente_margem_erro.get("1.0",END)
+            margem_erro = margem_erro.strip('\n')
+            if(len(coordenada_x) > 0 and len(coordenada_y) > 0):
+                try:
+                    try:
+                        coordenada_x = float(coordenada_x)
+                    except Exception as e:
+                        messagebox.showerror("Erro","O valor da coordenada x não é valido!\n\n"+ str(e))
+
+                    try:
+                        coordenada_y = float(coordenada_y)
+                    except Exception as e:
+                        messagebox.showerror("Erro","O valor da coordenada y não é valido!\n\n"+ str(e))
+
+                    validar=None
+                    if len(margem_erro)>0:
+                        try:
+                            margem_erro = float(margem_erro)
+                            validar = d.inFuncao(funcao, coordenada_x, coordenada_y, margem_erro=margem_erro)
+                        except ValueError as e:
+                            messagebox.showerror("Erro","O valor da margem de erro não é valido! Usando o valor default!\n\n"+ str(e))
+                            validar = d.inFuncao(funcao, coordenada_x, coordenada_y)
+                    else:
+                        validar = d.inFuncao(funcao, coordenada_x, coordenada_y)
                     if not validar:
                         messagebox.showwarning("Atenção", "Os pontos inseridos não fazem parte da função!")
                     else:
                         d.retaTangentePonto(funcao, coordenada_x, coordenada_y, show_tangente=True)
-                else:
-                    messagebox.showerror("Erro","Não foi possivel calcular a reta tangente no ponto!")
+                except Exception as e:
+                    messagebox.showerror("Erro!", 
+                                        "Não foi possivel calcular a reta tangente no ponto ("
+                                        +str(coordenada_x)+", "+str(coordenada_y)+") da funçao inserida!\n\n" + str(e))
+            else:
+                messagebox.showerror("Erro!", "Os campos (x, y) não podem ser vazios!")
 
-            except Exception as e:
-                messagebox.showerror("Erro!", 
-                                    "Não foi possivel calcular a reta tangente no ponto ("
-                                    +str(coordenada_x)+", "+str(coordenada_y)+") da funçao inserida!\n\n" + str(e))
         else:
             d.retaTangentePonto(funcao)
