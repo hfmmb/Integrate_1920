@@ -208,14 +208,26 @@ class Diferencial(object):
 
         #Limite a esquerda da função
         if(sinal=="-"):
-            if(funcao.subs(x, valor_tendencia_limite-1e-8).is_real):
+            if valor_tendencia_limite == "-00":
+                return s.limit(funcao, x, "-00", dir=sinal)
+
+            elif valor_tendencia_limite == "00" or valor_tendencia_limite == "+00":
+                return s.limit(funcao, x, "+00", dir=sinal)
+
+            elif(funcao.subs(x, valor_tendencia_limite-1e-8).is_real):
                 return s.limit(funcao, x, valor_tendencia_limite, dir=sinal)
             else:
                 return None #Limite não existe
 
         #Limite a direita da função
         elif(sinal=="+"):
-            if(funcao.subs(x, valor_tendencia_limite+1e-8).is_real):
+            if valor_tendencia_limite == "-00":
+                return s.limit(funcao, x, "-00", dir=sinal)
+
+            elif valor_tendencia_limite == "00" or valor_tendencia_limite == "+00":
+                return s.limit(funcao, x, "+00", dir=sinal)
+
+            elif(funcao.subs(x, valor_tendencia_limite+1e-8).is_real):
                 return s.limit(funcao, x, valor_tendencia_limite, dir=sinal)
             else:
                 return None #Limite não existe
@@ -244,7 +256,7 @@ class Diferencial(object):
             func_latex = s.latex(funcao)
 
         except Exception as e:
-            print("Erro! Não foi possivel transformar a função em formato <<LaTex>>")
+            print("Erro! Não foi possivel transformar a função em formato <<LaTex>>\n\n"+ str(e))
         return func_latex
 
     def derivate(self, funcao, ordem=1):
