@@ -28,7 +28,7 @@ class UI(Frame):
         screen_width = resolution[0].width
         screen_height = resolution[0].height
 
-        window_width = round(0.66 * screen_width)
+        window_width = round(0.70 * screen_width)
         window_height = round(0.38 * screen_height)
 
         #Aplica a resolução a janela
@@ -103,6 +103,34 @@ class UI(Frame):
 
         self.frame_reta_tangente.pack( side=Tk.LEFT )        
         self.chkbx_reta_tg.pack( side=Tk.LEFT )
+
+        self.frame_opcoes_grafico = Frame(master=self.frame_modo, highlightbackground="black", highlightthickness=1)
+        self.lbl_opcoes_grafico = Label(self.frame_opcoes_grafico, text="Opções grafico: ")
+
+        self.frame_opcoes_grafico_row_1 = Frame(master=self.frame_opcoes_grafico)
+        self.lbl_min_x = Label(self.frame_opcoes_grafico_row_1, text="Min x: ")
+        self.tbx_min_x = Text(self.frame_opcoes_grafico_row_1, height=1, width=5)
+        self.lbl_max_x = Label(self.frame_opcoes_grafico_row_1, text="Max x: ")
+        self.tbx_max_x = Text(self.frame_opcoes_grafico_row_1, height=1, width=5)
+
+        self.frame_opcoes_grafico_row_2 = Frame(master=self.frame_opcoes_grafico)
+        self.lbl_min_y = Label(self.frame_opcoes_grafico_row_2, text="Min y: ")
+        self.tbx_min_y = Text(self.frame_opcoes_grafico_row_2, height=1, width=5)
+        self.lbl_max_y = Label(self.frame_opcoes_grafico_row_2, text="Max y: ")
+        self.tbx_max_y = Text(self.frame_opcoes_grafico_row_2, height=1, width=5)
+
+        self.frame_opcoes_grafico.pack( side = Tk.BOTTOM )
+        self.lbl_opcoes_grafico.pack( side = Tk.LEFT )
+        self.frame_opcoes_grafico_row_1.pack( side = Tk.TOP )
+        self.lbl_min_x.pack( side = Tk.LEFT )
+        self.tbx_min_x.pack( side = Tk.LEFT )
+        self.lbl_max_x.pack( side = Tk.LEFT )
+        self.tbx_max_x.pack( side = Tk.LEFT )
+        self.frame_opcoes_grafico_row_2.pack( side = Tk.TOP )
+        self.lbl_min_y.pack( side = Tk.LEFT )
+        self.tbx_min_y.pack( side = Tk.LEFT )
+        self.lbl_max_y.pack( side = Tk.LEFT )
+        self.tbx_max_y.pack( side = Tk.LEFT )
 
         #Contem os campos de input das integrais definidas com intervalo
         self.frame_integrais_definidas = Frame(master=self.frame_modo, highlightbackground="black", highlightthickness=1, width=20, height=10)
@@ -246,12 +274,11 @@ class UI(Frame):
                 #f(x)
                 if cb_index == 0:
                     self.get_coords(funcao)
-
                 #f'(x)
                 elif cb_index == 1:
                     try:
                         derivada = str(d.derivate(funcao))
-                        self.get_coords(derivada)
+                        self.get_coords(derivada, legenda="f'(x)=")
                     except Exception as e:
                         messagebox.showerror("Erro!", 
                                             "Não foi possivel calcular a primeira derivada da função inserida!\n\n" + str(e))
@@ -260,7 +287,7 @@ class UI(Frame):
                 elif cb_index == 2:
                     try:
                         segunda_derivada = str(d.derivate(funcao, 2))
-                        self.get_coords(segunda_derivada)
+                        self.get_coords(segunda_derivada, legenda="f''(x)=")
                     except Exception as e:
                         messagebox.showerror("Erro!", 
                                             "Não foi possivel calcular a segunda derivada da função inserida!\n\n" + str(e))
@@ -651,7 +678,40 @@ class UI(Frame):
         else:
             self.tbx_input.insert(END, "acot(x)")
 
-    def get_coords(self, funcao, show_tangente=False):
+    def get_coords(self, funcao, show_tangente=False, legenda="f(x)="):
+
+        min_x, max_x, min_y, max_y = self.tbx_min_x.get("1.0",END), self.tbx_max_x.get("1.0",END), self.tbx_min_y.get("1.0",END), self.tbx_max_y.get("1.0",END)
+        min_x, max_x, min_y, max_y = min_x.strip('\n'), max_x.strip('\n'), min_y.strip('\n'), max_y.strip('\n')
+        
+        if(len(min_x) < 1):
+            min_x = -10
+        else:
+            min_x = float(min_x)
+
+        if(len(max_x) < 1):
+            max_x = 10
+        else:
+            max_x = float(max_x)
+
+        if(min_x > max_x):
+            aux = min_x
+            min_x = max_x
+            max_x = aux
+
+        if(len(min_y) < 1):
+            min_y = -10
+        else:
+            min_y = float(min_y)
+
+        if(len(max_y) < 1):
+            max_y = 10
+        else:
+            max_y = float(max_y)
+
+        if(min_y > max_y):
+            aux = min_y
+            min_y = max_y
+            max_y = aux
 
         d = Diferencial()
 
@@ -689,7 +749,7 @@ class UI(Frame):
                     if not validar:
                         messagebox.showwarning("Atenção", "Os pontos inseridos não fazem parte da função!")
                     else:
-                        d.retaTangentePonto(funcao, coordenada_x, coordenada_y, show_tangente=True)
+                        d.retaTangentePonto(funcao, coordenada_x, coordenada_y, show_tangente=True, legenda=legenda, plot_eixo_x_limites=(min_x, max_x), plot_eixo_y_limites=(min_y, max_y))
                 except Exception as e:
                     messagebox.showerror("Erro!", 
                                         "Não foi possivel calcular a reta tangente no ponto ("
@@ -698,4 +758,4 @@ class UI(Frame):
                 messagebox.showerror("Erro!", "Os campos (x, y) não podem ser vazios!")
 
         else:
-            d.retaTangentePonto(funcao)
+            d.retaTangentePonto(funcao, legenda=legenda, plot_eixo_x_limites=(min_x, max_x), plot_eixo_y_limites=(min_y, max_y))

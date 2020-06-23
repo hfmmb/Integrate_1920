@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['main.py'],
-             pathex=['C:\\Users\\tosta\\Desktop\\Projeto Derivadas Integrais'],
+             pathex=['/home/helder/Documents/Escola/Universidade/Universidade dos Acores/Informatica Redes e Multimedia/2019_2020/Ano 4/2 Semestre/Calculo II/Integrate_1920'],
              binaries=[],
              datas=[],
              hiddenimports=[],

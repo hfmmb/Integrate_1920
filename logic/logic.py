@@ -22,9 +22,6 @@ class Diferencial(object):
         x, y = s.symbols("x y")
         funcao = s.sympify(funcao)
 
-
-
-
         q = np.linspace(0, 10)
         w = lambdify(x, funcao, "numpy")
 
@@ -51,28 +48,16 @@ class Diferencial(object):
         aq.set_xticklabels(('$a$'+'='+str(a), '$b$'+'='+str(b)))
         aq.set_yticks([])
 
-#        integral_plot = s.plot_implicit(y < funcao, (x, plot_eixo_x_limites[0], plot_eixo_x_limites[1]), (y, plot_eixo_y_limites[0], plot_eixo_y_limites[1]), ylim=0, line_color="darkorange", show=False)
-#        reta_a = s.plot(a, show=False, color="crimson")
-#        integral_plot.append(reta_a[0])
-#        integral_plot[1].label="a="+str(a)
-
-#        reta_b = s.plot(b, show=False, color="royalblue")
-#        integral_plot.append(reta_b[0])
-#        integral_plot[2].label="b="+str(b)
-
         funcao_latex = self.sympyLatexify(funcao)
-#        integral_plot.xticks = ((a, b))
-#        integral_plot.xticklabels = (('$a$', '$b$'))
+
         mapa = {'a':str(a), 'b':str(b), 'f':funcao_latex}
         integral_string = r"\int_{a}^{b} \! f(x) \,".format_map(mapa)
 #        integral_string = r'\int_a^b \! f(x) \, \mathrm{d}x {}'.format(funcao_latex)
 
-#        integral_plot.title = f"${integral_string}$"
-#        mplot.title = f"${integral_string}$"
         mplot.title(f"${integral_string}$")
         mplot.xlim(plot_eixo_x_limites[0], plot_eixo_x_limites[1])
         mplot.ylim(plot_eixo_y_limites[0], plot_eixo_y_limites[1])     
-#        integral_plot.show()
+
         mplot.show()
 
     def inFuncao(self, funcao, coord_x, coord_y, margem_erro=0.05):
