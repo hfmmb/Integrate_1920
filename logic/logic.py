@@ -1,6 +1,6 @@
 from .standardify import StringHandler
 from tkinter import messagebox
-import sympy.plotting
+#import sympy.plotting
 
 import sympy as s
 from sympy import lambdify
@@ -19,14 +19,12 @@ class Diferencial(object):
         if(plot_eixo_y_limites[0] < 0):
             plot_eixo_y_limites[0] = 0
 
-        x, y = s.symbols("x y")
+        x = s.symbols("x")
         funcao = s.sympify(funcao)
 
-        q = np.linspace(0, 10)
         w = lambdify(x, funcao, "numpy")
 
         fig, aq = mplot.subplots()
-#        aq.plot(x, y, 'r', linewidth=2)
         aq.set_ylim(bottom=0)
 
         # Make the shaded region
@@ -39,9 +37,6 @@ class Diferencial(object):
         aq.text(0.5 * (a + b), 30, r"$\int_a^b f(q)\mathrm{d}q$",
                 horizontalalignment='center', fontsize=20)
 
-        fig.text(0.9, 0.05, '$q$')
-        fig.text(0.1, 0.9, '$w$')
-
         aq.xaxis.set_ticks_position('bottom')
 
         aq.set_xticks((a, b))
@@ -50,9 +45,8 @@ class Diferencial(object):
 
         funcao_latex = self.sympyLatexify(funcao)
 
-        mapa = {'a':str(a), 'b':str(b), 'f':funcao_latex}
-        integral_string = r"\int_{a}^{b} \! f(x) \,".format_map(mapa)
-#        integral_string = r'\int_a^b \! f(x) \, \mathrm{d}x {}'.format(funcao_latex)
+        mapa = {'a':str(int(a)), 'b':str(int(b)), 'f':funcao_latex}
+        integral_string = r"\int_{a}^{b} \! f(x) \,dx= {f}".format_map(mapa)
 
         mplot.title(f"${integral_string}$")
         mplot.xlim(plot_eixo_x_limites[0], plot_eixo_x_limites[1])
@@ -86,7 +80,7 @@ class Diferencial(object):
         """Retorna o valor aproximado da integral da função dada
 
         Args:
-            funcao ([type]): [description]
+            funcao (string): Função a integrar
         """
         x = s.Symbol('x')
         integral = s.Integral(funcao, (x, limite_inferior, limite_superior))
@@ -138,6 +132,7 @@ class Diferencial(object):
         funcao_plot.xlim = plot_eixo_x_limites
         funcao_plot.ylim = plot_eixo_y_limites
 
+        #Reta tangente no ponto (x,y)
         if show_tangente == True:
             m = self.DecliveValor(funcao, coord_x)
             y=s.sympify(m*(x-coord_x)+coord_y)
@@ -153,18 +148,15 @@ class Diferencial(object):
             funcao_plot[1].label=reta_tangente_pretty
             funcao_plot[1].line_color = 'firebrick'
 
-#            ponto_tangente = sympy.plot_implicit(sympy.Eq(x**2 +y**2, 4), block = False)
-#            funcao_plot.append(ponto_tangente[0])
+            #Ponto (x, y)
+            ponto_tangente = s.plot_implicit(s.Eq(x**2 +y**2, 4), block = False, show=False)
+            funcao_plot.append(ponto_tangente[0])
+            funcao_plot[2].label="Ponto ("+str(coord_x)+", "+str(coord_y)+")"
+            funcao_plot[2].line_color = 'darkorange'
 
         funcao_latex = self.sympyLatexify(funcao)
         funcao_plot.title = f"${funcao_latex}$"
         funcao_plot.show()
-
-
-
-#        p1 = s.plot_implicit(s.Eq(x**2 + y**2, scale), (x, -10, 10),(y, -10, 10), aspect_ratio=(1.,1.))
-
-
 
     def LimiteValor(self, funcao, valor_tendencia_limite, sinal=None, margem_erro=0.1):
         """Efectua o calculo de um limite e retorna o valor caso exista
@@ -263,74 +255,6 @@ class Diferencial(object):
                 derivada_ordem_n = str(derivada_ordem_n)
 
             except Exception as e:
-                pass
                 messagebox.showerror("Erro!", 
-                                    "Não foi possivel calcular a derivada de ordem "+ ordem + " da funçao inserida!\n\n" + str(e))
+                                    "Não foi possivel calcular a derivada de ordem "+ str(ordem) + " da funçao inserida!\n\n" + str(e))
         return derivada_ordem_n
-
-
-dif = Diferencial()
-
-"""
-print(dif.LimiteValor("sqrt(x)", 0.1, '-'))
-print(dif.LimiteValor("sqrt(x)", 0, '-'))
-print(dif.LimiteValor("sqrt(x)", 0, '+'))
-print(dif.LimiteValor("sqrt(x)", 0))
-print(dif.LimiteValor("x/Abs(x)", 0, '-'))
-print(dif.LimiteValor("x/Abs(x)", 0, '+'))
-print(dif.LimiteValor("x/Abs(x)", 0))
-
-print(dif.LimiteValor("2000/(1+199*E**(-0.001*E))", s.S.Infinity, "+"))
-"""
-
-"""
-
-import numpy as np
-import matplotlib.pyplot as plt
-
-def find_nearest(array,value):
-    idx = (np.abs(array-value)).argmin()
-    return array[idx]
-
-# Simple mouse click function to store coordinates
-def onclick(event):
-    global ix, iy
-    ix, iy = event.xdata, event.ydata
-
-    # assign global variable to access outside of function
-    global coords
-    coords.append((ix, iy))
-
-    # Disconnect after 2 clicks
-    if len(coords) == 2:
-        fig.canvas.mpl_disconnect(cid)
-        plt.close(1)
-    return
-
-
-
-
-x, y = s.symbols("x y")
-#ponto_tangente = sympy.plot_implicit(sympy.Eq(x**2 +y**2, 4), block = False)
-
-
-x = np.arange(-10,10)
-y = x**2
-
-fig = plt.figure(1)
-ax = fig.add_subplot(111)
-ax.plot(x,y)
-
-coords = []
-
-# Call click func
-cid = fig.canvas.mpl_connect('button_press_event', onclick)
-
-plt.show(1)
-
-# limits for integration
-ch1 = np.where(x == (find_nearest(x, coords[0][0])))
-ch2 = np.where(x == (find_nearest(x, coords[1][0])))
-
-print ('Integral between '+str(coords[0][0])+ ' & ' +str(coords[1][0]))
-"""
