@@ -344,34 +344,34 @@ class UI(Frame):
                     valor_inferior, valor_superior = str(self.tbx_input_inferior.get("1.0", END)), str(self.tbx_input_superior.get("1.0", END))
                     valor_inferior_string, valor_superior_string = valor_inferior.strip('\n'), valor_superior.strip('\n')
                     if(len(valor_inferior) > 1 and len(valor_superior) > 1):
-                        if valor_inferior_string == "-00":
-                            valor_inferior = s.S.NegativeInfinity()
-                        else:
-                            valor_inferior = int(valor_inferior)
-                        if valor_superior_string == "00" or valor_superior == "+00" :
-                            valor_inferior = s.S.Infinity()
-                            
-                        else:
-                            valor_superior = int(valor_superior)
+                        infinito_negativo = valor_inferior == "-00" and (valor_superior != "00" and valor_superior != "+00")
+                        infinito_positivo = valor_inferior != "-00" and (valor_superior == "00" or valor_superior == "+00")
+                        if(infinito_negativo or infinito_positivo):
+                            if infinito_negativo == "00" or infinito_negativo == "+00":
+                                infinito_negativo = "-00"
+                            if infinito_positivo == "-00":
+                                infinito_positivo = "+00"
+                            if not (valor_inferior_string == "-00"):
+                                valor_inferior = float(valor_inferior)
+                            if not (valor_superior_string == "00" or valor_superior == "+00"):
+                                valor_superior = float(valor_superior)
 
-                        case_negative_infinity = valor_inferior_string == "-00" and ((valor_superior_string != "00") and (valor_superior_string != "+00"))
-                        case_positive_infinity = valor_inferior_string != "-00" and ((valor_superior_string == "00") or (valor_superior_string == "+00"))
-                        if case_negative_infinity and case_positive_infinity:
-                            if (valor_inferior > valor_superior):
-                                aux = int(valor_superior)
-                                valor_superior = int(valor_inferior)
-                                valor_inferior = int(aux)
-                        case_all_infinity = valor_inferior_string == "-00" and ((valor_superior_string == "00") or (valor_superior_string == "+00"))
-
-                        try:
-                            if not case_all_infinity:
-                                valor = d.Intergral_Valor(funcao, valor_inferior, valor_superior)
-                                messagebox.showinfo("Resultado Integral!", "Valor: "+ str(valor))
+                            integral_indefinida = valor_inferior_string == "-00" and (valor_superior_string == "00" or valor_superior_string == "+00")
+                            if not integral_indefinida:
+                                if not (infinito_negativo or infinito_positivo):
+                                    if (valor_inferior > valor_superior):
+                                        aux = float(valor_superior)
+                                        valor_superior = float(valor_inferior)
+                                        valor_inferior = float(aux)
+                                try:
+                                    valor = d.Intergral_Valor(funcao, valor_inferior, valor_superior)
+                                    messagebox.showinfo("Resultado Integral!", "Valor: "+ str(valor))
+                                except Exception:
+                                    messagebox.showerror("Erro!","Não foi possivel calcular o valor da integral dada no intervalo de limites [" + str(valor_inferior) + ", " + str(valor_superior) + "]!")
                             else:
-                                messagebox.showerror("Erro!","-00 e +00 em ambos os campos dos limites não é permitido! Integral Indefinida!")        
-
-                        except Exception:
-                            messagebox.showerror("Erro!","Não foi possivel calcular o valor da integral dada no intervalo de limites ["+valor_inferior+", "+valor_superior+"]!")        
+                                messagebox.showerror("Erro!","Introduziu uma integral indefinida, não uma integral impropria!")
+                        else:
+                            messagebox.showerror("Erro!","Introduziu uma integral definida, não uma integral impropria!")
                     else:
                         messagebox.showerror("Erro!","Preencha os campos de valores inferior e superior!")
 
@@ -488,11 +488,11 @@ class UI(Frame):
             self.tbx_input_inferior.pack(side=Tk.RIGHT, fill=Tk.BOTH)
             self.lbl_input_superior.pack(side=Tk.LEFT, fill=Tk.BOTH)
             self.tbx_input_superior.pack(side=Tk.RIGHT, fill=Tk.BOTH)
+            self.frame_reta_tangente.pack_forget()
 
             #Integral Impropria
             if(selected_index == 5):
                 self.frame_opcoes_grafico.pack_forget()
-                self.frame_reta_tangente.pack_forget()
 
         #Minimos e maximos
         elif(selected_index == 6):
