@@ -5,7 +5,7 @@ from tkinter.ttk import Combobox
 from sys import version_info, exit
 import pathlib
 import sympy as s
-from sympy import S, Symbol, Integral, Limit, sin, cos, tan, cot, sinh, cosh, cot, plot, solve, diff, integrate, ln, evalf, symbols
+from sympy import Symbol, Limit, sin, cos, tan, cot, sinh, cosh, cot, plot, solve, integrate, ln, symbols
 import webbrowser
 
 from screeninfo import get_monitors
@@ -47,7 +47,7 @@ class UI(Frame):
         fonte = Font(family="Helvetica", size=18)
 
         #Frame input função
-        funcao_text = "x³/(x²+sen(pi^(x)/2)+ln(E+1)+sqrt(15))"
+        funcao_text = "x³/(x² + sqrt(15))"
         self.frame_master_row = Frame(master=self.master, highlightbackground="black", highlightthickness=2)
         self.frame_master_row.pack(side = Tk.TOP)
 
@@ -72,9 +72,9 @@ class UI(Frame):
                 u"\u222B"+" f(x)dx (Indefinida)", 
                 u"\u222B"+"ab f(x)dx (Definida)" ,
                 u"\u222B"+"ab f(x)dx (Imprópria)", 
-                "Minimos e Máximos",
+                "Minimos e Máximos f(x)",
                 "Limite (Valor)",
-                u"\u222B"+" f(x)dx (Zeros)"], width=25)
+                "Zeros f(x)"], width=25)
 
         self.cb_modo.current(0)
         self.cb_modo.bind("<<ComboboxSelected>>", self.listener_cb_modo)
@@ -297,7 +297,7 @@ class UI(Frame):
 
                     try:
                         primitiva = integrate(funcao)
-
+                        d.show_function("Primitiva", primitiva)
                     except Exception as e:
                         messagebox.showerror("Erro!", "Não foi possivel mostrar o grafico da integral desta função!\n\n" + str(e))
 
@@ -391,45 +391,48 @@ class UI(Frame):
                 #Limites
                 elif cb_index == 7:
                     valor_tendencia_limite = str(self.tbx_input_valor_limite.get("1.0", END))
+                    valor_tendencia_limite = valor_tendencia_limite.strip('\n')
+                    if(len(valor_tendencia_limite) > 0):
+                        mensagem = ""
+                        sinal = str(self.tbx_input_sinal_limite.get("1.0", END)) #Limite a esquerda ou direita da funcao
+                        sinal = sinal.strip("\n")
+                        if sinal == '+':
+                            mensagem = "direita"
+                        elif sinal == '-':
+                            mensagem = "esquerda"
+                        else:
+                            sinal=None
+                            messagebox.showwarning("Sinal indefinido!", "Sinal do limite não definido! (-) esquerda (+) direita.")
 
-                    mensagem = ""
-                    sinal = str(self.tbx_input_sinal_limite.get("1.0", END)) #Limite a esquerda ou direita da funcao
-                    sinal = sinal.strip("\n")
-                    if sinal == '+':
-                        mensagem = "direita"
-                    elif sinal == '-':
-                        mensagem = "esquerda"
+                        limite = None
+                        if sinal == None:
+                            try:
+                                limite = d.LimiteValor(funcao, valor_tendencia_limite)
+                                messagebox.showinfo("Limite da função", 
+                                                    "O limite da função para x->" + str(valor_tendencia_limite) + "é: "+ str(limite))
+                            except Exception as e:
+                                messagebox.showerror("Erro!", "Não foi possivel calcular o limite de x->" + str(valor_tendencia_limite) + " para a função dada!\n\n"+str(e))
+                        else:
+                            try:
+                                limite = d.LimiteValor(funcao, valor_tendencia_limite, sinal)
+
+                                messagebox.showinfo("Limite da função", 
+                                                    "O limite à "+mensagem+" (" + str(sinal) + ") da função é: \n"+ str(limite))
+                            except Exception as e:
+                                messagebox.showerror("Erro!", "Não foi possivel calcular o limite à "+mensagem+" (" + str(sinal) + ") para a função dada!")
+                        d.retaTangentePonto(str(Limit(funcao, x, valor_tendencia_limite).doit()))
                     else:
-                        sinal=None
-                        messagebox.showwarning("Sinal indefinido!", "Sinal do limite não definido! (-) esquerda (+) direita.")
+                        messagebox.showerror("Erro!", "Preencha o campo da tendencia do limite!")
 
-                    limite = None
-                    if sinal == None:
-                        try:
-                            limite = d.LimiteValor(funcao, valor_tendencia_limite)
-                            messagebox.showinfo("Limite da função", 
-                                                "O limite da função para x->"+valor_tendencia_limite+"é: "+ str(limite))
-                        except Exception as e:
-                            messagebox.showerror("Erro!", "Não foi possivel calcular o limite de x->"+valor_tendencia_limite+" para a função dada!\n\n"+str(e))
-                    else:
-                        try:
-                            limite = d.LimiteValor(funcao, valor_tendencia_limite, sinal)
-
-                            messagebox.showinfo("Limite da função à"+mensagem+" ("+sinal+")", 
-                                                "O limite à "+mensagem+" ("+sinal+") da função é: "+ str(limite))
-                        except Exception as e:
-                            messagebox.showerror("Erro!", "Não foi possivel calcular o limite à "+mensagem+" ("+sinal+") para a função dada!")
-                    d.retaTangentePonto(str(Limit(funcao, x, valor_tendencia_limite).doit()))
-
-                #Zeros integral
+                #Zeros
                 elif cb_index == 8:
                         try:
-                            integral_calculo_zeros = solve(primitiva)
-                            primitiva_pretty = u"\u222B"+"f(x)dx="+handler.pretty_ready(str(primitiva))
-                            messagebox.showinfo("Resultado Primitiva / Integral Definida!", str(primitiva_pretty)+"\nZeros: "+ str(integral_calculo_zeros))
+                            funcao_calculo_zeros = solve(funcao)
+                            funcao_pretty = "f(x)="+handler.pretty_ready(str(funcao))
+                            messagebox.showinfo("Resultado zeros função", str(funcao_pretty)+"\nZeros: \n\n"+ str(funcao_calculo_zeros))
 
                         except Exception as e:
-                            messagebox.showerror("Erro!", "Não foi possivel calcular a integral desta função!\n" + str(e))
+                            messagebox.showerror("Erro!", "Não foi possivel calcular os zeros da integral desta função!\n" + str(e))
 
         except Exception as e:
             messagebox.showerror("ERRO!", "Não foi possivel resolver a expressao inserida, está bem escrita?\n\n"+ str(e))
@@ -466,12 +469,17 @@ class UI(Frame):
         selected_index = self.cb_modo.current()
         self.chkbx_reta_tg.deselect()
 
-        # f(x) e reta tangente no ponto
-        if(selected_index < 3):
-            self.frame_reta_tangente.pack(side=Tk.LEFT)
-            self.chkbx_reta_tg.pack(side=Tk.LEFT)
+        self.frame_reta_tangente.pack(side=Tk.LEFT)
+        self.chkbx_reta_tg.pack(side=Tk.LEFT)
+        self.frame_opcoes_grafico.pack( side = Tk.BOTTOM )
 
-        #Integral Definida
+        #Integral Indefinida/Primitiva
+        if(selected_index == 3):
+            self.frame_opcoes_grafico.pack_forget()
+            self.frame_reta_tangente.pack_forget()
+            self.frame_limite.pack_forget()
+
+        #Integral Definida ou Impropria
         elif(selected_index == 4 or selected_index == 5):
             self.frame_integrais_definidas.pack(side=Tk.LEFT)
             self.frame_integrais_definidas_linha_1.pack(side=Tk.TOP, fill=Tk.BOTH)
@@ -480,6 +488,18 @@ class UI(Frame):
             self.tbx_input_inferior.pack(side=Tk.RIGHT, fill=Tk.BOTH)
             self.lbl_input_superior.pack(side=Tk.LEFT, fill=Tk.BOTH)
             self.tbx_input_superior.pack(side=Tk.RIGHT, fill=Tk.BOTH)
+
+            #Integral Impropria
+            if(selected_index == 5):
+                self.frame_opcoes_grafico.pack_forget()
+                self.frame_reta_tangente.pack_forget()
+
+        #Minimos e maximos
+        elif(selected_index == 6):
+            self.frame_opcoes_grafico.pack_forget()
+            self.frame_reta_tangente.pack_forget()
+            self.frame_limite.pack_forget()
+            self.frame_integrais_definidas.pack_forget()
 
         #Limites
         elif(selected_index == 7):
@@ -490,16 +510,26 @@ class UI(Frame):
             self.tbx_input_sinal_limite.pack(side=Tk.RIGHT, fill=Tk.BOTH)
             self.lbl_input_valor_limite.pack(side=Tk.LEFT, fill=Tk.BOTH)
             self.tbx_input_valor_limite.pack(side=Tk.RIGHT, fill=Tk.BOTH)
+            self.frame_reta_tangente.pack_forget()
+            self.frame_opcoes_grafico.pack_forget()
+
+        #Zeros
+        elif(selected_index == 8):
+            self.frame_opcoes_grafico.pack_forget()
+            self.frame_reta_tangente.pack_forget()
+            self.frame_limite.pack_forget()
+            self.frame_integrais_definidas.pack_forget()
 
         else:
-            self.frame_reta_tangente.pack_forget()
+#            self.frame_reta_tangente.pack_forget()
             self.chkbx_reta_tg.deselect()
-            self.frame_reta_tangente_x.pack_forget()
-            self.frame_reta_tangente_y.pack_forget()
+#            self.frame_reta_tangente_x.pack_forget()
+#            self.frame_reta_tangente_y.pack_forget()
 
             self.frame_limite.pack_forget()
-            self.chkbx_reta_tg.pack_forget()
+ #           self.chkbx_reta_tg.pack_forget()
             self.frame_integrais_definidas.pack_forget()
+
 
     def listener_chkbx_reta_tg(self):
         if(self.chkbx_reta_toggle_state.get() == 1):

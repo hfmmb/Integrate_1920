@@ -258,3 +258,32 @@ class Diferencial(object):
                 messagebox.showerror("Erro!", 
                                     "Não foi possivel calcular a derivada de ordem "+ str(ordem) + " da funçao inserida!\n\n" + str(e))
         return derivada_ordem_n
+
+    def show_function(self, titulo, funcao):
+        """Mostra uma função em formato LaTex
+
+        Args:
+            titulo (string): Titulo do grafico
+            funcao (string): Função a mostrar
+        """
+        funcao = s.sympify(funcao)
+        funcao_latex = self.sympyLatexify(funcao)
+
+        fig = mplot.figure()
+
+        ax = fig.add_subplot(111)
+        fig.subplots_adjust(top=0.95)
+        ax.set_title(titulo)
+
+        ax.text(0.1, 0.5, r'${}$'.format(funcao_latex), fontsize=20)
+
+        ax.axis([0, 5, 0, 1])
+        ax.spines['top'].set_visible(False)
+        ax.spines['left'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.spines['bottom'].set_visible(False)
+        
+        ax.set_xticklabels([])
+        ax.set_yticklabels([])
+        
+        mplot.show()
