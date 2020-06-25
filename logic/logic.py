@@ -1,6 +1,5 @@
 from .standardify import StringHandler
 from tkinter import messagebox
-#import sympy.plotting
 
 import sympy as s
 from sympy import lambdify
@@ -147,12 +146,6 @@ class Diferencial(object):
             reta_tangente_pretty = "Reta tangente no ponto ("+str(coord_x)+", "+str(coord_y)+") de f(x)="+self.handler.pretty_ready(funcao)
             funcao_plot[1].label=reta_tangente_pretty
             funcao_plot[1].line_color = 'firebrick'
-
-            #Ponto (x, y)
-            ponto_tangente = s.plot_implicit(s.Eq(x**2 +y**2, 4), block = False, show=False)
-            funcao_plot.append(ponto_tangente[0])
-            funcao_plot[2].label="Ponto ("+str(coord_x)+", "+str(coord_y)+")"
-            funcao_plot[2].line_color = 'darkorange'
 
         funcao_latex = self.sympyLatexify(funcao)
         funcao_plot.title = f"${funcao_latex}$"

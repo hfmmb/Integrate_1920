@@ -767,7 +767,7 @@ class UI(Frame):
                         messagebox.showerror("Erro","O valor da coordenada y não é valido!\n\n"+ str(e))
 
                     validar=None
-                    if len(margem_erro)>0:
+                    if len(margem_erro) > 0:
                         try:
                             margem_erro = float(margem_erro)
                             validar = d.inFuncao(funcao, coordenada_x, coordenada_y, margem_erro=margem_erro)

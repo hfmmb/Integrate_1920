@@ -4,12 +4,11 @@
   <title>Integrate</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="stylesheet" href="css/style1.css">
+  <script src="scripts/man.js"></script>
+  <script src="scripts/script1.js"></script>
+  <script src="scripts/script2.js"></script>
   <link rel="icon" href="icon.png">
-
 
   <style>
     .header {
@@ -30,7 +29,7 @@
       text-align: center;
       padding: 14px 16px;
       text-decoration: none;
-      font-size: 17px;
+      font-size: 16px;
     }
     
     #navbar a:hover {
@@ -66,7 +65,7 @@
     }
     
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {height: 6000px}
+    .row.content {height: 9750px}
     
     /* Set gray background color and 100% height */
     .sidenav {
@@ -104,10 +103,10 @@
   <nav class="navbar navbar-inverse;z-index:10000;" id="navbar">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#"><img src="icon.png" style="max-width: 30px;"></a>
       </div>
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
+          <li><a class="navbar-brand" href="#"><img src="icon.png" style="max-width: 25px; max-width: 25px;"></a></li>
           <li class="active"><a href="#manual">Manual</a></li>
           <li><a href="#definicoes">Definições</a></li>
           <li><a href="#historia_diferencial">Hist. Diferencial</a></li>
@@ -119,6 +118,7 @@
     <div class="row content">
     <div class="col-sm-2 sidenav"></div>
     <div class="col-sm-8 text-left"> 
+      <img class="center" src="icon.png">
       <hr>
       <section id="manual">
           <h2>Manual do programa</h2>
@@ -130,7 +130,7 @@
           <hr>
           <h4>Polinomial</h4>
           <p><b>x⁵</b> --> <i>x⁵</i> ou <i>x**5</i> ou <i>x^5</i></p>
-          <p><b>x^(1-x)</b> --> x^(1/x) ou x**(1/x)</p>
+          <p><b>x^(1/x)</b> --> x^(1/x) ou x**(1/x)</p>
           <p><b>x^(e)</b> --> x^E ou x**E ou x^(E)</p>
           <p><b>√x</b> --> √(x) ou sqrt(x)</p>
           <p><b>√(x+3)</b> --> √(x+3) ou sqrt(x+3)</p>
@@ -164,119 +164,195 @@
       <section id="definicoes">
         <h2>Algumas definições</h2>
         <h3>Derivada</h3>
-        <p><b>Definição:</b> Limite para o qual tende a razão entre o incremento da função e o incremento da variavel quando o ultimo tende para zero.<br>
+        <p><b>Definição:</b> Limite para o qual tende a razão entre o incremento da função e o incremento da variável quando o último tende para zero.<br>
           <i style="vertical-align: middle;">-<a href="http://porbase.bnportugal.pt/ipac20/ipac.jsp?menu=search&aspect=basic_search&npp=20&ipp=20&spp=20&profile=porbase&ri=&index=ISBN&term=8496330079&x=12&y=6&aspect=basic_search">Fonte: Grande Enciclopedia Universal Vol. 7</a></i></p>
           <hr>
           <h3>Integrais</h3>
           <h4>Indefinidas (Primitivas)</h4>
           <p>Integral indefinida, primitiva ou derivada inversa, define-se como função primitiva de f(x) uma função F(x), tal que a sua derivada seja dF(x)/d(x) = f(x) no ramo da matematica do Calculo Diferencial</p>
-
           <h4>Definidas</h4>
           <p>Integral que se calcula atraves das regras de <a href="https://www.sangakoo.com/en/unit/definite-integral-and-barrow-s-rule">Barrow</a>, dos quais se chamam de integrais imediatos aqueles que se podem deduzir atraves das regras da derivação.</p>
-
           <hr>
       </section>
       <section id="historia_diferencial">
-        <img src="arquimedes.jpg" alt="Arquimedes" style="float:right; max-width: 150px; max-height: 250px;">
+        <div style="float:right; max-width: 150px; max-height: 250px;">
+          <img src="img/people/ibnAl-Haytham.png" alt="Alhazen Ḥasan Ibn al-Haytham" style="max-width: 150px; max-height: 250px;">
+          <i style="vertical-align: middle;">Alhazen Ḥasan Ibn al-Haytham</i>
+        </div>
         <h2>História do Cálculo Diferencial</h2>
-        <h3>No século XVII</h3>
-
         <h4>Introdução</h4>
-        <p>O problema de encontrar a tangente de uma curva foi estudado por vários matemáticos, deste alguns dos primeiros estudos efectuados na antiguidade por Arquimedes a matematicos do século XVII como Newton e Leibniz. 
-          A primeira tentativa efectuada de determinar a tangente de uma curva semelhante à metodologia moderna de Calculo veio de Gilles Persone de Roberval, no periodo de 1630 a 1640, no entanto, quase na mesma altura em que Roberval desenvolvia o seu metodo, Pierre de Fermat usou a noção de "máxima" e a infinitesimal para encontrar a tangente de uma curva. 
-          Alguns historiadores creditam assim Fermat com a descoberta da derivada, mas não foi no entanto até até Leibniz e Newton terem rigorosamente definido o seu metodo de tangentes, que uma técnica generalizada tornou-se aceite. 
-        </p>
+        <p>O problema de encontrar a tangente de uma curva foi estudado por vários matemáticos, dos quais se destacam Arquimedes de Siracusa, Zu Chongzhi no período chinês dos Três Reinos, Alhazen Ḥasan Ibn al-Haytham na Renascença Árabe, a matemáticos do século XVII como Newton e Leibniz. A primeira tentativa efectuada de determinar a tangente de uma curva semelhante à metodologia moderna de Cálculo, veio de Gilles Persone de Roberval, na década de 1630 a 1640, no entanto, quase na mesma altura em que Roberval desenvolvia o seu método, Pierre de Fermat usou a noção de "máxima" e de "infinitesimal" para encontrar a tangente de uma curva. Alguns historiadores creditam assim Fermat com a descoberta da derivada, mas não foi, no entanto, até Leibniz e Newton terem rigorosamente definido o seu método de tangentes, que uma técnica generalizada tornou-se amplamente aceite.</p>
         <hr>
-        <h4>Metodo de Roberval de linhas tangentes usando movimento instantâneo</h4>
-        <p>A ideia principal do metodo de Roberval para determinar a tangente de uma curva consistia em grande parte na noção de movimento instantâneo. Ou seja, 
-          considerando-se o desenho da curva num ponto em movimento, se, em algum ponto da curva os vetores que efectuam o movimento da curva podem ser determinados, entao a tangente é simplesmente a combinação da soma destes vetores.</p>
-        <p>Este metodo foi aplicado por Roberval para encontrar as tangentes de curvas para as quais ele foi capaz de determinar os vetores constituentes do movimento num ponto. Para uma parabola, Roberval conseguiu determinar estes vetores, exemplificados abaixo na figura.</p>
-        <img src="gillesRoberval.jpg" alt="Gilles Persone de Roberval" style="float:right; max-width: 150px; max-height: 250px;">
+        <h4>Método de Roberval de linhas tangentes usando movimento instantâneo</h4>
+        <p>A ideia principal da metodologia de Roberval para determinar a tangente de uma curva consistia, em grande parte, na noção de "movimento instantâneo". Ou seja, considerando-se o desenho da curva num ponto em movimento, se, em algum ponto da curva os vetores que efectuam o movimento desta podem ser determinados, então a tangente é, simplesmente, a combinação da soma destes vetores.</p>
+        <p>Este método foi aplicado por Roberval para encontrar as tangentes de curvas para as quais ele foi capaz de determinar os vetores referentes ao movimento num ponto. Para uma parábola, Roberval conseguiu determinar estes vetores, exemplificados abaixo na figura.</p>
+        <div style="float:right; max-width: 150px; max-height: 250px;">
+          <img src="img/people/zuChongzhi.jpg" alt="Zu Chongzhi" style="max-width: 150px; max-height: 250px;">
+          <i style="vertical-align: middle;">Zu Chongzhi</i>
+        </div>
         <img class="center" src="img/img_01.gif">
-        <p class="center">Gráfico de uma parabola, mostrando o movimento dos vetores V1 e V2 num ponto P. Roberval determinou que num ponto P de um parabola, existem dois vetores que indicam o valor do seu movimento instantâneo, V1, que esta na mesma direção da semi-reta SP, focando-se na parabola no ponto S e o ponto P, sendo V2 por sua vez o indicador do movimento instantâneo, sendo perpendicular ao eixo y, e directriz da intesecção da parabola. A tangente do gráfico no ponto P é simplesmente a soma dos vetores V = V1 + V2.</p>
-        <p>Utilizando esta metodologia, Roberval foi capaz de encontrar as tangentes de numerosas outras curvas incluindo elipses e cicloides, no entanto, encontrar os vetores descrevendo o movimento instantaneo num ponto mostrou-se dificil para um grande numero de curvas, alem disso, Roberval nunca foi capaz de generalizar este metodo e por essa razão existe historicamente apenas como o percursor do metodo de encontrar tangentes com o auxilio de infinitesimais desenvolvido por Edwards mais tarde.</p>
+        <p class="center">Gráfico de uma parábola, mostrando o movimento dos vetores V1 e V2 num ponto P. Roberval determinou que num ponto P de um parábola, existem dois vetores que indicam o valor do seu movimento instantâneo, V1, que está na mesma direção da semi-reta SP, focando-se na parábola no ponto S e o ponto P, sendo V2, por sua vez, o indicador do movimento instantâneo perpendicular ao eixo y, e diretriz da interseção da parábola. A tangente do gráfico no ponto P é simplesmente a soma dos vetores V = V1 + V2.</p>
+        <p>Desta forma, Roberval foi capaz de encontrar as tangentes de numerosas outras curvas incluindo elipses e ciclóides, no entanto, encontrar os vetores de movimento instantâneo num ponto mostrou-se difícil para um grande número de curvas, além disso, Roberval nunca foi capaz de explicitar o funcionamento deste método logicamente e, por essa razão, existe historicamente apenas como o percursor do método de encontrar tangentes com o auxílio dos infinitesimais, desenvolvidos por Edwards mais tarde.</p>
         <hr>
-
         <h4>Máxima e Tangente de Fermat</h4>
-        <img src="pierreFermat.jpg" alt="Pierre de Fermat" style="float: right;; max-width:150px; max-height: 250px;">
-        <p>O metodo de encontrar a tangente foi desenvolvido em 1630 por Pierre De Fermat e apesar de nunca ter sido rigorosamente formulado, assemelha-se aos metodos utilizados por Newton e Leibniz, tendo em falta no entanto o conceito formal de limite, Fermat não foi capaz de justificar propriamente o seu trabalho, no entanto, ao examinar as suas metodologias, é aparente que este compreendia com grande dominio, o metodo usado para diferenciar na actualidade.</p>
-        <p>De modo a entender o metodo de Fermat, é preciso em primeiro lugar compreender a técnica utilizada para encontrar a máxima. O primeiro problema documentado por Fermat em diferenciação, envolve encontrar o máximo de uma equação, ficando aparente que foi graças a esta descoberta que este conseguiu depois desenvolver o seu metodo de descoberta de tangentes. 
-        </p>
-        <p>O problema consistia em dividir um segmento de uma reta em dois segmentos de forma a que o produto dos dois novos segmentos fosse um máximo.</p>
+        <div style="float:right; max-width: 150px; max-height: 250px;">
+          <img src="img/people/arquimedes.jpg" alt="Arquimedes" style="max-width: 150px; max-height: 250px;">
+          <i style="vertical-align: middle;">Arquimedes de Siracusa</i>
+        </div>
+        <p>O processo para localizar a tangente foi desenvolvido em 1630 por Pierre De Fermat. Este nunca foi, no entanto, rigorosamente formulado e assemelha-se aos métodos utilizados por Newton e Leibniz, mantendo-se assim o conceito formal de limite desconhecido. Fermat não foi capaz de justificar propriamente o seu trabalho, porém, ao examinar as suas metodologias, é aparente que este compreendia com grande dominio, o método usado para diferenciar na actualidade.</p>
+        <p>De modo a compreendê-lo, é preciso em primeiro lugar, entender a técnica utilizada para encontrar a máxima. O seu primeiro problema documentado em diferenciação, envolve encontrar a "máxima" de uma equação, ficando aparente que esta descoberta que permitiu desenvolver o seu método de cálculo de tangentes.</p>
+        <p>O problema consistia em dividir um segmento de reta em dois, de modo a que o produto destes fosse um máximo.</p>
         <img class="center" src="img/img_02.gif">
-        <p>Uma reta de tamanho 'a' é dividida em dois segmentos, esses dois segmentos sao 'x' e '(a-x)', seguidamente, maximiza-se o produto x (a - x). Na altura, este metodo era relativamente misterioso, devido a falta do conceito atual de limite, mas na atualidade, tendo este em mente, o metodo mostra-se relativamente simples de compreender. Fermat substitui cada valor de x com x + E e estipula que quando a máxima é encontrada, x e x + E são iguais. Obtendo assim a equação:</p>
+        <p>Uma reta de tamanho 'a' é dividida em dois segmentos, ('x' e '(a-x)') e maximiza-se o produto x (a - x). Na altura, este método era de certa forma abstrato, devido à falta do conceito atual de limite, mas na atualidade, tendo este em mente, o processo revela-se relativamente simples de compreender. Fermat substitui cada valor de 'x' com 'x + E' e estipula que quando a máxima é encontrada, 'x' e 'x + E' são iguais. Obtendo assim a equação:</p>
         <p>x(a - x) = (x + E)(a - x - E)</p>
         <p>Através da simplificação de ambos os membros da equação e cancelamento de termos, Fermat reduziu-a para:</p>
+        <div style="float:right; max-width: 150px; max-height: 250px;">
+          <img src="img/people/gillesRoberval.jpg" alt="Gilles Persone de Roberval" style="float:right; max-width: 150px; max-height: 250px;">
+        </div>
         <img class="center" src="img/img_03.gif">
         <p>Feito isto, atribui-se a E o valor de 0, ficando assim com:</p>
         <img class="center" src="img/img_04.gif">
-        <p>Isto indica que para máximizar o produto de dois segmentos, cada comprimento das semi-retas deve ser metade do total tamanho da reta, apesar deste resultado ser correto, o metodo contém varias lacunas de informação que podem ser apenas retificadas pelo conhecimento atual, Fermat simplesmente assume que E = 0, o que nos casos em que acontecem divisões por E, consequentemente ocorrem divisões por zero. 
-          No entanto, quando este assumia que E = 0, estava, sem saber, a considerar o limite de E quando este tende para zero (que explica a razão do seu raciocinio algebrico funcionar). O Metodos dos Extremos de Fermat pode ser entendido em termos modernos também, ao substituir x + E por x, dizendo assim que f(x+E) = f(x), ou que f(x+E) - f(x) = 0, assumindo que f(x) é polinomial, esta expressão será divisivel por E. Logo, o metodo de Fermat pode ser entendido como a definição de uma derivada (quando usada para encontrar a extrema):</p>
+        <p>Isto indica que para maximizar o produto de dois segmentos, cada comprimento das semi-retas deve ser metade do total tamanho da reta, apesar deste resultado ser correto, o método contém varias lacunas de informação que só podem ser retificadas pelo conhecimento atual. Fermat limita-se a assumir que E = 0, o que nos casos em que acontecem divisões por E, ocorrem divisões por zero. No entanto, quando este assumia que E = 0, sem se aperceber considerava o limite de E quando este tende para zero (que explica a razão do seu raciocínio algébrico funcionar). O Método dos Extremos de Fermat, pode também ser compreendido em termos modernos, ao substituir 'x + E' por 'x', dizendo assim que 'f(x+E) = f(x)', ou que 'f(x+E) - f(x) = 0'. Assumindo que 'f(x)' é polinomial, esta expressão será divisível por E. Logo, o método de Fermat pode ser visto como a definição de derivada (quando usada para encontrar a extrema):</p>
         <img class="center" src="img/img_05.gif">
-        <p>Apesar de Fermat nunca ter feito uma explicação concisa da sua metodologia, o seu trabalho pode ser interpretado como a definição do calculo diferencial.</p>
-        <p>Usando o seu E "misterioso", Fermat descobriu ainda um metodo de encontrar a reta tangente em curvas. Veja-mos a seguinte parabola.</p>
+        <p>Apesar de Fermat nunca ter feito uma explicação concisa da sua metodologia, o seu trabalho pode ser interpretado como a definição do cálculo diferencial.</p>
+        <p>Usando o seu E "misterioso", Fermat descobriu ainda um método de encontrar a reta tangente em curvas. Vejamos a seguinte parábola.</p>
+        <div style="float:right; max-width: 150px; max-height: 250px;">
+          <img src="img/people/pierreFermat.jpg" alt="Pierre de Fermat" style="float: right; max-width:150px; max-height: 250px;">
+          <i style="vertical-align: middle;">Pierre de Fermat</i>
+        </div>
         <img class="center" src="img/img_06.gif">
-        <p>Fermat quis encontrar a formula para uma tangente de f(x). Para tal, este desenha a reta tangente no ponto x e considera um ponto de E distancia. Através da semelhança de triangulos, a seguinte relação existe:</p>
+        <p>Fermat quis encontrar a fórmula para uma tangente de f(x). Para tal, este desenha a reta tangente no ponto x e considera um ponto de E distância. Através da semelhança de triângulos, a seguinte relação existe:</p>
         <img class="center" src="img/img_07.gif">
-        <p>Ao isolar 's', ele notou que:</p>
+        <p>Ao isolar 's', reparou que:</p>
         <img class="center" src="img/img_08.gif">
-        <p>Seguidamente, sendo E = 0 (em termos modernos, ele usou o limite de E tendendo para 0) e reconheceu que a parte inferior da equação era igual à derivada do seu metodo da minima. Consequentemente, para encontrar a inclinação de uma curva, é apenas necessario encontrar f(x)/s. Consideremos a equação: <img src="img/img_09.gif"> </p>
+        <p>Seguidamente, sendo E = 0 (em termos modernos, Fermat usou o limite de E tendendo para 0) reconheceu que a parte inferior da equação era equivalente à derivada do seu método da mínima. Consequentemente, para encontrar a inclinação de uma curva, é apenas necessário encontrar f(x)/s. Consideremos a equação: <img src="img/img_09.gif"> </p>
         <img class="center" src="img/img_10.gif">
         <p>Novamente, sendo E=0 concluimos que:</p>
         <img class="center" src="img/img_11.gif">
         <p>Agora voltando à equação original:</p>
         <img class="center" src="img/img_12.gif">
-        <p>Aqui a notação moderna de derivada f'(x) é utilizada, que Fermat reconhecia como [f(x+E) - f(x)]/E quando E=0. Usando este metodo, Fermat foi capaz de formular a regra geral para a reta tangente de uma função, desenvolvendo assim a regra geral para diferenciação e integração polinomial, no entanto, este nunca se apercebeu da relação inversa que existe entre as duas operações, e devido a inconsistencias lógicas na justificação da sua metodologia, este ficou em grande parte esquecido. Não foi até Newton e Leibniz que tal deixou de ocorrer.</p>
-
+        <p>Aqui a notação moderna de derivada f'(x), que Fermat reconhecia como [f(x+E) - f(x)]/E quando E=0, é utilizada. Deste modo, foi capaz de formular a regra geral para a reta tangente de uma função, desenvolvendo assim a regra geral para diferenciação e integração polinomial, no entanto, este nunca se apercebeu da relação inversa que existe entre as duas operações, e devido a inconsistências lógicas na justificação da sua metodologia, este ficou em grande parte esquecido. Não foi até Newton e Leibniz que tal deixou de ocorrer.</p>
         <hr>
         <h4>Newton e Leibniz</h4>
-        <img src="isaacNewton.jpg" alt="isaacNewton" style="float: right;; max-width:150px; max-height: 250px;">
-        <p>Newton e Leibniz resolveram 3 dos grandes problemas que surgiram na historia do desenvolvimento do Calculo Diferencial. 
-          Primeiro, através das tecnicas de diferenciação e integração que já tinham sido previamente descobertas, estes foram os primeiros a explicar o "processo algébrico" para cada operação. Em segundo lugar, apesar do facto da diferenciação e integração já ter sido descoberta por Fermat, Newton e Leibniz reconheceram a sua utilidade como um processo generalizado, isto é, antes de Newton e Leibniz terem considerado soluções para os problemas da area e tangente como soluções especificas para problemas particulares, ninguém antes tinha reconhecido a utilidade do calculo diferencial como um ferramenta matematica generalizada. Finalmente, através do reconhecimento da diferenciação e integração como processos inversos, Newton e Leibniz foram os primeiros a pronunciar tal veracidade de forma explicita, e a provar rigorosamente tal com rigor.</p>
-        <p>Ambos abordaram os problemas do calculo com notações e metodologias diferentes, e passaram em os dois a parte final da sua vida numa disputa por quem era o verdadeiro responsavel por descobrir o calculo, acusando-se um ao outro de plágio, apesar de nomes como Newton e Leibniz estarem associados com a invenção do calculo, como já dito anteriormente, o processo já tinha sido iniciado por outros, no entanto, a generalização de tecnicas e demosntração explicita do Teorema Fundamental do Calculo não se demonstrou uma simples tarefa, assemelhando-se no entanto aos seus antecessores em algumas das suas metodologias usadas.</p>
+        <div style="float:right; max-width: 150px; max-height: 250px;">
+          <img src="img/people/isaacNewton.jpg" alt="isaacNewton" style="float: right; max-width:150px; max-height: 250px;">
+          <i style="vertical-align: middle;">Isaac Newton</i>
+        </div>
+        <p>Newton e Leibniz resolveram três dos grandes problemas que surgiram na história do desenvolvimento do Cálculo Diferencial. Primeiro, através das técnicas de diferenciação e integração, que já tinham sido previamente descobertas, estes foram os pioneiros na explicação do "processo algébrico" para cada operação. Em segundo lugar, apesar do facto da diferenciação e integração já ter sido descoberta por Fermat, Newton e Leibniz reconheceram a sua utilidade como um processo generalizado, isto é, antes de Newton e Leibniz terem considerado soluções para os problemas da área e tangente como soluções específicas para problemas particulares, previamente, ninguém tinha reconhecido a utilidade do cálculo diferencial como uma ferramenta generalizada. Finalmente, através do reconhecimento da diferenciação e integração como processos inversos, Newton e Leibniz foram os primeiros a pronunciar tal veracidade de forma explícita, e a provar tal com rigor.</p>
+        <p>Ambos abordaram os problemas do cálculo com notações e metodologias diferentes, e na parte final da sua vida, disputaram incessantemente por quem era o verdadeiro responsável pela descoberta e formulação do cálculo diferencial, acusando-se um ao outro de plágio. Apesar de nomes como Newton e Leibniz estarem associados com a invenção do cálculo, como já dito anteriormente, o processo teria sido iniciado por outros. Entretanto, a generalização de técnicas e demonstração explícita do Teorema Fundamental do Cálculo não se demonstrou uma simples tarefa, apesar de ser semelhante aos seus antecessores em algumas das suas metodologias usadas.</p>
         <hr>
         <h4>As Inversas Elusivas – a Integral e a Derivada</h4>
-        <p>A notação de Leibniz assemelha-se mais com aquela usada no calculo moderno, e a sua metodologia de descoberta da relação inversa entre integrais e derivadas será examinada. Apesar de Newton ter chegado independentemente a mesma conclusão, o seu metodo de descoberta é um bocado menos acessivel.</p>
+        <p>A notação de Leibniz assemelha-se mais com aquela usada no cálculo moderno, e o seu processo de descoberta da relação inversa entre integrais e derivadas será examinada. Apesar de Newton ter chegado independentemente à mesma conclusão, o seu método de descoberta é um pouco menos acessivel.</p>
         <p>Leibniz define a derivada como "é"</p>
-        <img src="bonaventuraCavalieri.jpeg" alt="Cavalieri" style="float: right;; max-width:150px; max-height: 250px;">
         <img class="center" src="img/img_13.gif">
-        <p>Das publicações inicias de Cavalieri, Leibniz já se encontrava familiarizado com as tecnicas de encontrar a area debaixo de uma curva, este descobriu a relação inversa entre a area de uma derivada ao utilizar a sua definição de diferencial.</p>
-        <p>Considere o grafico da equação y = x2+1:</p>
+        <p>Das publicações inicias de Cavalieri, Leibniz já se encontrava familiarizado com as técnicas de encontrar a área debaixo de uma curva, este descobriu a relação inversa entre a área de uma derivada ao utilizar a sua definição de diferencial.</p>
+        <p>Considere o gráfico da equação y = x2+1:</p>
         <img class="center" src="img/img_14.gif">
-        <p>Leibniz teve a ideia de usar a diferencial na area da função do grafico, considerando adicionar a D (a area) abaixo o grafico da curva, D é definido pelo menor rectangulo de PQRS onde a area é y(D x) com a adição de uma fracção do rectangulo superior SRUT cuja area é simplesmente D x(D y), ou seja, D fica entre y(D x) e o rectângulo PQUT que o encapsula cuja area é (y + D y)(D x). Leibniz depois considerou o racio D (area)/ D x e verificou que visto que D (area) encontra-se entre y(D x) e (y + D y)(D x) o racio será assim entre y e (y + D y). Pelo diagrama, pode ser visto que D x e D y estão relacionados entre si, ou seja, quando D x tende para 0, D y tambem tende para 0, tal indica que o racio D (area)/ D x encontra-se entre 'y' e um valor que se aproxíma de y (visto que y + D y se aproxíma de y de forma a que D y tende para 0), escrito agora em termos da definição de derivada de Leibniz:</p>
-
-        <img src="leibniz.jpg" alt="Leibniz" style="float: right;; max-width:150px; max-height: 250px;">
+        <p>Leibniz teve a ideia de utilizar a diferencial na área da função do gráfico, considerando adicionar a D (a área) abaixo o gráfico da curva, D é definido pelo menor retângulo de PQRS onde a área é y(D x) com a adição de uma fração do retângulo superior SRUT cuja área é simplesmente D x(D y), ou seja, D fica entre y(D x) e o retângulo PQUT que o encapsula, cuja área é (y + D y)(D x). Leibniz depois considerou a relação D (area)/ D x e verificou que uma vez que D (área) encontra-se entre y(D x) e (y + D y)(D x) a relação será assim entre y e (y + D y). Pelo diagrama, pode ser visto que D x e D y estão relacionados entre si, ou seja, quando D x tende para 0, D y também tende para 0, tal indica que D (area)/ D x encontra-se entre 'y' e um valor que se aproxíma de y (visto que y + D y se aproxíma de y de forma a que D y tende para 0), escrito agora em termos da definição de derivada de Leibniz:</p>
+        <div style="float:right; max-width: 150px; max-height: 250px;">
+          <img src="img/people/leibniz.jpg" alt="Leibniz" style="float: right; max-width:150px; max-height: 250px;">
+          <i style="vertical-align: middle;">Gottfried Wilhelm Leibniz</i>
+        </div>
         <img class="center" src="img/img_15.gif">
-
-        <p>Leibniz mostrou a relação inversa entre a diferencial e a area da função, nomeadamente, que a diferencial da area de uma função de uma função y é igual à própria função. Neste caso, a derivada da area da função y = x2+1 é nomeadamente y=x2+1</p>
-        
-          <p>
-            A influência de Leibniz na história do calculo integral espalhou-se muito alem do facto deste ter-se apercebido desta relação revolucionaria,
-            ele foi também responsável por inventar a notação matematica que é utilizada pela maior parte dos estudantes de calculo nos dias de hoje.
-            Leibniz utilizou o simbolo 'ò' que era apena a forma utilizada para escrever "S" na altura para denotar um numero infinito de somas, isto estava directamente relacionado com o que ele chamava de "integral"
-            ou, a soma de um numero de areas infinitamente pequenas. A area debaixo da função y, ou integral de y, era expressada como òy (dx).</p>
-          <p>O que esta notação na realidade estava a indicar que devia ser efectuada a soma de todas as areas de dx * y quando dx tende para 0
-            A maneira que dx se aproxima de 0, existem um numero infinito destas areas, vindo assim o simbolo ò representar um numero infinito de somas.
-            Este tipo de integração hoje em dia, é chamado de integral indefinida ou derivada inversa, devido há relação inversa que existe entre estas como descoberto por Leibniz.
-            Isto é, a derivada de uma integral indefinida dá-nos própria função. Além disso, este desenvolveu ainda a notação das integrais definidas, integrais que produzem uma area abaixo de uma curva entre dois valores que a limitam "a" e "b",
-            a notação consistia em embutir os valores "a" e "b" no simbolo da integral como representado abaixo:</p>
-          <img class="center" src="img/img_16.gif">
-        <p>Sendo A a area associada à função produzida pela integral indefinida, a area A foi obtida atraves da Lei de Wallis.</p>
-        <i>Texto Historico baseado em: <a href="http://www.math.wpi.edu/IQP/BVCalcHist/calc2.html">-Fonte</a></i>
+        <p>Leibniz mostrou a relação inversa entre a derivada e a área da função, nomeadamente, que a derivada da área de uma função y, é igual à própria função. Neste caso, a derivada da área da função y = x2+1 é nomeadamente y=x2+1</p>
+        <p>A influência de Leibniz na história do cálculo integral espalhou-se muito além do facto deste ter-se apercebido desta relação revolucionária, sendo ainda responsável por inventar a notação matemática que é utilizada pela maior parte dos estudantes de cálculo nos dias de hoje. Leibniz utilizou o símbolo 'ò' que era apenas a forma utilizada para escrever "S" na altura, de modo a denotar um número infinito de somas. Isto estava diretamente relacionado com o que ele chamava de "integral", ou a soma de um número de áreas infinitamente pequenas. A área debaixo da função y, ou integral de y, era expressa como òy (dx).</p>
+        <p>Na realidade esta notação estava a indicar que devia ser efetuada a soma de todas as áreas de dx * y quando dx tende para 0. À maneira que dx se aproxima de 0, existe um número infinito destas áreas, vindo assim o símbolo ò representar um número infinito de somas. Este tipo de integração hoje em dia, é chamado de integral indefinida ou derivada inversa, devido à relação inversa que existe entre estas como descoberto por Leibniz. Isto é, a derivada de uma integral indefinida dá-nos a própria função. Além disso, este desenvolveu ainda a notação das integrais definidas, integrais que produzem uma área abaixo de uma curva entre dois valores que a limitam "a" e "b". A notação consistia em embutir os valores "a" e "b" no símbolo da integral como representado abaixo:</p>
+        <img class="center" src="img/img_16.gif">
+        <p>Sendo A a área associada à função produzida pela integral indefinida, a área A foi obtida através da Lei de Wallis.</p>
       </section>
     <hr>
+
     <section id="historia_integral">
       <h2>História do Cálculo Integral</h2>
+      <h4>Introdução</h4>
+      <p>A história da descoberta da técnica moderna de integração, começou com a tentativa do desenvolvimento de um método para o encontro da área debaixo de uma curva, as fundações para a descoberta da integral foram primeiro implantadas por Cavalieri, matemático italiano do século XVII, o seu trabalho focou-se, principalmente, no facto de que uma curva pode ser esboçada ao mover um ponto e uma área de acordo com o movimento de uma reta.</p>
+      <hr>
+      <h4>Método das Indivisíveis de Cavalieri</h4>
+      <p>De forma a desenvolver a notação geométrica de um ponto em movimento, Cavalieri trabalhou no conceito que chamou de "indivisíveis", isto é, se um ponto em movimento pode ser usado para esboçar uma curva, Cavalieri passou a definir a curva resultante como a soma dos seus pontos, sendo assim, cada curva é, por consequência, composta por um número infinito de pontos, ou "indivisíveis", que por sua vez compõem também uma área com um número infinito de linhas, Cavalieri, no entanto, não foi o primeiro matemático a considerar figuras geométricas em termos infinitesimais, tendo sido precedido por Kepler, que foi o primeiro a utilizar tal noção no cálculo de áreas.</p>
+      <p>Quanto ao método, começamos por encontrar a área de um triângulo. Previamente, sabia-se que a área de um triângulo era ½ da área de um retângulo com a mesma base e altura.</p>
+      <div style="float:right; max-width: 150px; max-height: 250px;">
+        <img src="img/people/bonaventuraCavalieri.jpeg" alt="Cavalieri" style="float: right; max-width: 150px; max-height: 250px;">
+        <i style="vertical-align: middle;">Bonaventura Cavalieri</i>
+      </div>
+    <img class="center" src="img/img_17.gif">
+      <p>O retângulo com base de 6 unidades e altura de 5 unidades (A = bh, com área total de 30 unidades), sendo que a área total do retângulo interno pode ser facilmente calculada através da soma de todos os retângulos internos, comparando agora as duas áreas:</p>
+      <img class="center" src="img/img_18.gif">
+      <p>Usando a mesma metodologia, o rácio do rectângulo com maior número de subdivisiões internas é calculado:</p>
+      <img class="center" src="img/img_19.gif">
+      <p>A área total das regiões internas é sempre ½ da área do retângulo completo, tal pode ser demonstrado usando o somatório para o numerador como demonstrado abaixo:</p>
+      <img class="center" src="img/img_20.gif">
+      <div style="float:right; max-width: 150px; max-height: 250px;">
+        <img src="img/people/JohannesKepler.jpg" alt="Johannes Kepler" style="float: right; max-width: 150px; max-height: 250px;">
+        <i style="vertical-align: middle;">Johannes Kepler</i>
+      </div>
+      <p>Usando a forma simplificada, nota-se que:</p>
+      <img class="center" src="img/img_21.gif">
+      <p>Cavalieri utilizou de seguida a sua noção de "indivisiveis" para imaginar a existência de um número infinito de regiões sombreadas, este notou que estas regiões ficaram pequenas o suficiente para serem consideradas linhas, as extrusões mostravam-se suficiente uniformes de forma a que fosse possívelç ser visualizada uma linha. 
+        A maneira que isto acontece, a região sombreada começa a formar um triângulo, e a maneira que esta região sombreada aumenta, o rácio mantém-se simplesmente ½.</p>
+      <p>Esta metodologia encontra-se em concordância com a forma clássica de que a área de um triângulo equivale a ½ do produto da base pela altura. Mostrou ainda que a sua noção de indivisiveis pode ser usada para demonstrar a área debaixo de uma curva, isto é, a maneira que as areas dos retângulos se transformam em linhas, a sua soma produz a area existente debaixo de uma curva. Este método foi utilizado para calcular uma grande variedade de curvas, no entanto, este nunca documentou a sua técnica de forma consistente tendo a causa desta ser rejeitada por grande parte dos outros matemáticos do seu ramo. Apesar destas metodologias demonstradamente funcionarem não foi até John Wallis que o limite foi em 1656 introduzido e a fundação do cálculo integral solidificado.</p>
+      <p>De forma a entender as contribuições de Wallis para o cálculo integral, é necessario analisar primeiro as técnicas teoricas de Cavalieri aplicando-as para encontrar a área debaixo de uma curva com maior complexidade, para tal, será demonstrado o caso de uma parábola <img src="img/img_22.gif"></p>
+      <img class="center" src="img/img_23.gif">
+      <p>Cada região retangular tem base de 1 unidade relativamente ao eixo das abcissas e altura de x2 (obtida através da definição de parábola). Definindo o número de regiões retangulares por 'm', Cavalieri tenta uma vez mais, expressar a área debaixo de uma curva como o rácio de uma área já conhecida, considerando a área encapsulante de todos os rectângulos m, pode ser visto no diagrama que a base deste rectângulo equivale a m+1 (existem m rectângulos, começando o primeiro a ½ e acabando o último a m + ½), a altura do retângulo encapsulante será m2, recorrendo a definição da parabola, o rácio pode agora ser expressado pela equação:</p>
+      <img class="center" src="img/img_24.gif">
+      <div style="float:right; max-width: 150px; max-height: 250px;">
+        <img src="img/people/johnWallis.jpg" alt="Leibniz" style="float: right; max-width:150px; max-height: 250px;">
+        <i style="vertical-align: middle;">John Wallis</i>
+      </div>
+      <p>Relembrando agora que a área de um retângulo é definida pelo produto da sua base e altura, pode ser afirmado que o retângulo encapsulante tem m+1 na sua base e m2 na sua altura, relativos ao denominador, quanto ao numerador cada um dos m retângulos tem 1 de base e altura do seu valor de x². Cavalieri procede a calcular o rácio para os diferentes valores de m, e ao fazê-lo notou um padrão que lhe permitiu ser capaz de establecer uma fórmula para a razão das áreas:</p>
+      <img class="center" src="img/img_25.gif">
+      <p>Cavalieri procedeu a utilizar os seus "indivisíveis" para fazer outra descoberta no ramo do cálculo, e notou que à medida que m ficava maior, o termo <img src="img/img_26.gif"> tinha cada vez menos influência no resultado final do cálculo, em termos atuais, temos que:</p>
+      <img class="center" src="img/img_27.gif">
+      <p>Ou seja, de forma a que o número de retângulos tende para infinito, o rácio das áreas aproxima-se de <img src="img/img_29.gif">. Apesar disto, Cavalieri nunca formalizou qualquer noção de limite, mas utilizou o conceito no cálculo de áreas. Depois de usar o conceito de infinito para descrever as proporções da área, Cavalieri conseguiu formular uma expressão algébrica para a área abaixo da parábola. Para qualquer distância x ao longo do eixo x, a altura da parábola seria o dobro. Portanto, a área do retângulo que encerra as subdivisões retangulares em um ponto x era igual a <img src = "img / img_30.gif"> ou o seu triplo. De seu resultado anterior, a área abaixo da parábola é igual a 1/3 da área do retângulo delimitador. Em outras palavras:</p>
+      <img class="center" src="img/img_31.gif">
+      <p>Com este metodo, Cavalieri tomou os primeiros passos face ao desenvolvimento da integração.</p>
+      <hr>
+      <h4>Lei da Integração Polinomial de Wallis</h4>
 
+
+
+      <p>A contribuição de John Wallis para o cálculo integral foi desenvolver uma lei algébrica de integração que reduziu a necessidade de analisar cada curva. Examinando a relação entre a função e a função que descreve a própria área (denominada função da área da curva), conseguindo também desenvolver uma lei algébrica para determinar as funções da área. Em vez de simplesmente apresentar a relação algébrica.</p>
+      <p>Consideremos o gráfico da função y = k ou <img src="img/img_32.gif">:</p>
+      <img class="center" src="img/img_33.gif">
+      <p>Como podemos observar no diagrama, a área abaixo da linha em qualquer ponto ao longo das abcissas será kx ou <img src = "img/img_34.gif">. Consideremos agora o gráfico da função y = kx:</p>
+      <img class="center" src="img/img_35.gif">
+      <p>Em qualquer ponto x ao longo do eixo das abcissas, a altura será igual a kx. Como a área forma um triângulo, a área abaixo da curva pode ser expressa como ½ do produto da base pela altura ou <img src = "img/img_36.gif">. Como já foi mostrado acima, a área abaixo de uma parábola y = kx2 pode ser expressa como <img src = "img / img_37.gif">. Wallis apercebeu-se da relação algébrica entre uma função e a função da área associada. Ou seja, a função de área de <img src = "img/img_38.gif"> é <img src = "img/img_39.gif">. Wallis demonstrou que isto não só é verdadeiro onde n é um número natural (como observado por Cavalieri), mas também funcionava com expoentes negativos e fracionários. Wallis também mostrou que a área abaixo de um polinómio composto por termos com diferentes expoentes (por exemplo, <img src = "img / img_40.gif">) pode ser calculada usando sua lei em cada um dos termos independentemente.</p>
+      <hr>
+      <h4>Abordagem de Fermat à Integração</h4>
+      <p>Uma das mais comuns aplicações de séries infinitas no desenvolvimento do cálculo, veio do método de integração de Pierre De Fermat. Embora métodos anteriores de integração tivessem usado a noção de linhas infinitas que descrevem uma área, Fermat foi o primeiro a usar séries infinitas na sua metodologia. O primeiro passo envolvia descrever unicamente os retângulos infinitos que compõem a área sob uma curva.</p>
+      <img class="center" src="img/img_41.gif">
+      <p>Fermat notou que, dividindo a área abaixo de uma curva em retângulos sucessivamente menores à medida que x se aproximava de zero, uma infinidade de retângulos ilustrariam a área com precisão. Escolhendo um valor 0 < e < 1, de modo a que se forme um retângulo abaixo da curva <img src = "img / img_42.gif"> em cada potência de e vezes x (Note que e =/= 2,71828…). Fermat então calculou cada área individualmente:</p>
+      <img class="center" src="img/img_43.gif">
+      <p>A primeira equação representa a área do maior retângulo, a segunda equação o próximo retângulo à esquerda e assim por adiante. As áreas são simplesmente encontradas multiplicando a base pela altura. A base é conhecida pelo potência de e, e pela altura, avaliando <img src = "img / img_44.gif"> no valor x fornecido. As simplificações de cada expressão de área são fornecidas de uma forma que será útil ao tentar encontrar a soma infinita. O próximo passo de Fermat foi calcular a soma infinita desses retângulos à medida que a potência de e se aproximava do infinito. </p>
+      <img class="center" src="img/img_45.gif">
+      <p>Ao determinar a soma de cada série finita crescente, Fermat foi capaz de desenvolver uma expressão para a soma infinita. Para encontrar uma fórmula simplificada para a expressão </p>
+      <img class="center" src="img/img_46.gif">
+      <p>...note que a soma é uma série geométrica da forma:</p>
+      <img class="center" src="img/img_47.gif">
+      <p>Se 0 < x < 1, a soma é <img src = "img/img_48.gif"> (isto pode ser verificado ao dividir (1-x) por 1). Portanto, substituindo <img src = "img/img_49.gif"> novamente por x e inserindo na equação geral, a área pode ser expressa como:</p>
+      <img class="center" src="img/img_50.gif">
+      <p>Fermat agora desejava expressar a área inteiramente em termos de x, e para fazê-lo substituiu <img src = "img/img_51.gif">, que por simplificação e fatoração (1-E):</p>
+      <img class="center" src="img/img_52.gif">
+      <p>Fermat agora deu um passo que, com o conhecimento atual, é explicável, mas que na altura devido à falta do conceito de limite, poderia parecer ilógico ou incompreensível. Ou seja, Fermat disse que se E = 1 e desde que <img src = "img/img_53.gif"> e porque <img src = "img/img_54.gif"> então e também deve ser igual a 1. Substituindo 1 por E em a expressão da área acima:</p>
+      <img class="center" src="img/img_55.gif">
+      <p>Embora esta metodologia tenha produzido o resultado apropriado para a área abaixo da curva, a justificação de Fermat dizer que E = 1, não foi formulada adequadamente. O que ele realmente estava fazendo era tomar o limite quando E tende para 1 e quando E tende para 1, e também tende para 1. À medida que e se aproxima de 1, então e elevado a qualquer potência também tende para 1, e a soma infinita das áreas abaixo da curva foi determinada. A noção de limite foi sugerida no trabalho de Fermat, mas não foi formalmente definida até mais tarde.</p>
+      <p>O trabalho de Wallis e Fermat lançou as bases para o conceito moderno de integral. No entanto, o que Fermat e Wallis não reconheceram foi a relação entre a derivada e o integral. Esta idéia seria desenvolvida simultaneamente por dois homens: Newton e Leibniz. Mais tarde, isto seria conhecido como Teorema Fundamental do Cálculo e, como o nome indica, é uma descoberta marcante na história do Cálculo.</p>
     </section>
+
+    <i>Webografia: 
+      <a href="https://www.sciencefocus.com/science/archimedes-inventor-of-war-machines-and-calculus-almost/">[1]</a>
+      <a href="http://www.its.caltech.edu/~kcborder/Notes/LeibnizRule.pdf">[2]</a></i>
+      <a href="http://www.math.wpi.edu/IQP/BVCalcHist/calc2.html">[3]</a>
+      <a href="http://www.math.wisc.edu/~angenent/276/wallis.pdf">[4]</a>
+      <a href="http://www.math.wpi.edu/IQP/BVCalcHist/calc1.html">[5]</a>
+      <a href="https://en.wikipedia.org/wiki/History_of_calculus">[6]</a>
+      <a href="https://mindyourdecisions.com/blog/2016/10/12/the-wallis-product-formula-for-pi-and-its-proof/">[7]</a>
+      <a href="https://mathcs.clarku.edu/~ma121/fermat.pdf">[8]</a>
   </div>
     <div class="col-sm-2 sidenav"></div>
   </div>
 </div>
-
-<script src="man/man.js"></script>
 </body>
 <footer class="container-fluid text-center">
-  <p>Hélder Filipe M. de M. Braga © <script>document.write(new Date().getFullYear())</script></p>
+  <p>Hélder Braga © <script>document.write(new Date().getFullYear())</script></p>
 </footer>
 </html>
