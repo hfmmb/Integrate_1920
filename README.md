@@ -1,5 +1,8 @@
 
-<div style="text-align:center"><img src="./icon.png" /></div>
+<p align="center">
+  <img src=""./icon.png"" alt="Integrate logo"/>
+</p>
+
 # Integrate - Derivação e Integração
 
 Programa que permite resolver e mostrar graficos de funções derivadas e integrais
