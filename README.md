@@ -1,3 +1,4 @@
+![Integrate](icon.png)
 # Integrate - Derivação e Integração
 
 Programa que permite resolver e mostrar graficos de funções derivadas e integrais
@@ -14,7 +15,6 @@ Software potencialmente necessario
     sympy -> For some math libs
     pyinstaller --> For binary executable creation. Needs to be compiled on the platform of destination, cross compiling for diferent platforms not supported!
 ```
-
 ### Compilação
     Windows:
         Executar "build_windows.ps1" 
