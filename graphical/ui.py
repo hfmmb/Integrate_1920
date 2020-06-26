@@ -340,38 +340,53 @@ class UI(Frame):
 
                 #Integrais Impróprias (Valor)
                 elif cb_index == 5:
+                    
+                    # 'a' e 'b'
+                    valor_inferior, valor_superior = str(self.tbx_input_inferior.get("1.0", END)).strip('\n'), str(self.tbx_input_superior.get("1.0", END)).strip('\n')
 
-                    valor_inferior, valor_superior = str(self.tbx_input_inferior.get("1.0", END)), str(self.tbx_input_superior.get("1.0", END))
-                    valor_inferior_string, valor_superior_string = valor_inferior.strip('\n'), valor_superior.strip('\n')
-                    if(len(valor_inferior) > 1 and len(valor_superior) > 1):
+                    #Se != vazio
+                    if(len(valor_inferior) > 0 and len(valor_superior) > 0):
+
+                        #Se a igual a -00 e b diferente de +00 
                         infinito_negativo = valor_inferior == "-00" and (valor_superior != "00" and valor_superior != "+00")
+
+                        #Se a diferente de -00 e b igual a +00 
                         infinito_positivo = valor_inferior != "-00" and (valor_superior == "00" or valor_superior == "+00")
-                        if(infinito_negativo or infinito_positivo):
-                            if infinito_negativo == "00" or infinito_negativo == "+00":
-                                infinito_negativo = "-00"
-                            if infinito_positivo == "-00":
-                                infinito_positivo = "+00"
-                            if not (valor_inferior_string == "-00"):
+
+                        #Verifica se o limite 'a' da esquerda, tendendo para infinito, tem o sinal correto
+                        if valor_inferior == "00" or valor_inferior == "+00":
+                            valor_inferior = "-00"
+
+                        #Verifica se o limite 'a' da esquerda, tendendo para infinito, é inferior ao da direita
+                        if valor_superior == "-00":
+                            valor_superior = "+00"
+
+                        #Verifica se existe uma integral indefinida/primitiva, a == -00 e b == +00
+                        integral_indefinida = valor_inferior == "-00" and (valor_superior == "00" or valor_superior == "+00")
+
+                        if integral_indefinida:
+                            messagebox.showerror("Erro!","Introduziu uma integral indefinida, não uma integral imprópria!")
+
+                        #Se for integral impropria
+                        elif(infinito_negativo or infinito_positivo):
+
+                            if not (valor_inferior == "-00"):
                                 valor_inferior = float(valor_inferior)
-                            if not (valor_superior_string == "00" or valor_superior == "+00"):
+                            if not (valor_superior == "00" or valor_superior == "+00"):
                                 valor_superior = float(valor_superior)
 
-                            integral_indefinida = valor_inferior_string == "-00" and (valor_superior_string == "00" or valor_superior_string == "+00")
-                            if not integral_indefinida:
-                                if not (infinito_negativo or infinito_positivo):
-                                    if (valor_inferior > valor_superior):
-                                        aux = float(valor_superior)
-                                        valor_superior = float(valor_inferior)
-                                        valor_inferior = float(aux)
-                                try:
-                                    valor = d.Intergral_Valor(funcao, valor_inferior, valor_superior)
-                                    messagebox.showinfo("Resultado Integral!", "Valor: "+ str(valor))
-                                except Exception:
-                                    messagebox.showerror("Erro!","Não foi possivel calcular o valor da integral dada no intervalo de limites [" + str(valor_inferior) + ", " + str(valor_superior) + "]!")
-                            else:
-                                messagebox.showerror("Erro!","Introduziu uma integral indefinida, não uma integral impropria!")
+                            if not (infinito_negativo or infinito_positivo):
+                                if (valor_inferior > valor_superior):
+                                    aux = float(valor_superior)
+                                    valor_superior = float(valor_inferior)
+                                    valor_inferior = float(aux)
+                            try:
+                                valor = d.Intergral_Valor(funcao, valor_inferior, valor_superior)
+                                messagebox.showinfo("Resultado da Integral Indefinida", "Valor: "+ str(valor))
+                            except Exception:
+                                messagebox.showerror("Erro!","Não foi possivel calcular o valor da integral indefinida dada no intervalo de limites [" + str(valor_inferior) + ", " + str(valor_superior) + "]!")
                         else:
-                            messagebox.showerror("Erro!","Introduziu uma integral definida, não uma integral impropria!")
+                            messagebox.showerror("Erro!","Introduziu uma integral definida, não uma integral imprópria!")
                     else:
                         messagebox.showerror("Erro!","Preencha os campos de valores inferior e superior!")
 
@@ -409,7 +424,7 @@ class UI(Frame):
                             try:
                                 limite = d.LimiteValor(funcao, valor_tendencia_limite)
                                 messagebox.showinfo("Limite da função", 
-                                                    "O limite da função para x->" + str(valor_tendencia_limite) + "é: "+ str(limite))
+                                                    "O limite da função para x->" + str(valor_tendencia_limite) + " é: \n\n"+ str(limite))
                             except Exception as e:
                                 messagebox.showerror("Erro!", "Não foi possivel calcular o limite de x->" + str(valor_tendencia_limite) + " para a função dada!\n\n"+str(e))
                         else:
@@ -417,10 +432,9 @@ class UI(Frame):
                                 limite = d.LimiteValor(funcao, valor_tendencia_limite, sinal)
 
                                 messagebox.showinfo("Limite da função", 
-                                                    "O limite à "+mensagem+" (" + str(sinal) + ") da função é: \n"+ str(limite))
+                                                    "O limite à "+mensagem+" (" + str(sinal) + ") da função é: \n\n"+ str(limite))
                             except Exception as e:
                                 messagebox.showerror("Erro!", "Não foi possivel calcular o limite à "+mensagem+" (" + str(sinal) + ") para a função dada!")
-                        d.retaTangentePonto(str(Limit(funcao, x, valor_tendencia_limite).doit()))
                     else:
                         messagebox.showerror("Erro!", "Preencha o campo da tendencia do limite!")
 
@@ -428,8 +442,10 @@ class UI(Frame):
                 elif cb_index == 8:
                         try:
                             funcao_calculo_zeros = solve(funcao)
+
+                            funcao_calculo_zeros = str(funcao_calculo_zeros).replace(',','\n').replace('[','').replace(']','')
                             funcao_pretty = "f(x)="+handler.pretty_ready(str(funcao))
-                            messagebox.showinfo("Resultado zeros função", str(funcao_pretty)+"\nZeros: \n\n"+ str(funcao_calculo_zeros))
+                            messagebox.showinfo("Zeros da função", str(funcao_pretty)+"\nZeros: \n\n"+ str(funcao_calculo_zeros))
 
                         except Exception as e:
                             messagebox.showerror("Erro!", "Não foi possivel calcular os zeros da integral desta função!\n" + str(e))

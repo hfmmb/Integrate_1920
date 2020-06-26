@@ -179,10 +179,10 @@ class Diferencial(object):
         #Limite a esquerda da função
         if(sinal=="-"):
             if valor_tendencia_limite == "-00":
-                return s.limit(funcao, x, "-00", dir=sinal)
+                return s.limit(funcao, x, s.S.NegativeInfinity, dir=sinal)
 
             elif valor_tendencia_limite == "00" or valor_tendencia_limite == "+00":
-                return s.limit(funcao, x, "+00", dir=sinal)
+                return s.limit(funcao, x, s.S.Infinity, dir=sinal)
 
             elif(funcao.subs(x, valor_tendencia_limite-1e-8).is_real):
                 return s.limit(funcao, x, valor_tendencia_limite, dir=sinal)
@@ -192,25 +192,31 @@ class Diferencial(object):
         #Limite a direita da função
         elif(sinal=="+"):
             if valor_tendencia_limite == "-00":
-                return s.limit(funcao, x, "-00", dir=sinal)
+                return s.limit(funcao, x, s.S.NegativeInfinity, dir=sinal)
 
             elif valor_tendencia_limite == "00" or valor_tendencia_limite == "+00":
-                return s.limit(funcao, x, "+00", dir=sinal)
+                return s.limit(funcao, x, s.S.Infinity, dir=sinal)
 
             elif(funcao.subs(x, valor_tendencia_limite+1e-8).is_real):
                 return s.limit(funcao, x, valor_tendencia_limite, dir=sinal)
             else:
                 return None #Limite não existe
         else:
-            sinal_esquerda=funcao.subs(x, str(valor_tendencia_limite-1e-8))
-            sinal_direita=funcao.subs(x, valor_tendencia_limite+1e-8)
-            #Assume-se que o limite seja um valor pequeno, 
-            #se este for pequeno o suficiente, 
-            #assumimos que este existe e tentamos calcula-lo
-            if(abs(sinal_esquerda-sinal_direita)<margem_erro):
-                return s.limit(funcao, x, valor_tendencia_limite)
+            if valor_tendencia_limite == "-00":
+                return s.limit(funcao, x, s.S.NegativeInfinity)
+
+            elif valor_tendencia_limite == "00" or valor_tendencia_limite == "+00":
+                return s.limit(funcao, x, s.S.Infinity)
             else:
-                return None #Limite não existe
+                sinal_esquerda=funcao.subs(x, str(valor_tendencia_limite-1e-8))
+                sinal_direita=funcao.subs(x, str(valor_tendencia_limite+1e-8))
+                #Assume-se que o limite seja um valor pequeno, 
+                #se este for pequeno o suficiente, 
+                #assumimos que este existe e tentamos calcula-lo
+                if(abs(sinal_esquerda-sinal_direita)<margem_erro):
+                    return s.limit(funcao, x, valor_tendencia_limite)
+                else:
+                    return None #Limite não existe
 
     def sympyLatexify(self, funcao):
         """Transforma uma função em formato string ou sympy para formato LaTex e retorna o resultado

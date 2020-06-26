@@ -65,7 +65,7 @@
     }
     
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {height: 9750px}
+    .row.content {height: 12000px}
     
     /* Set gray background color and 100% height */
     .sidenav {
@@ -109,7 +109,7 @@
           <li><a class="navbar-brand" href="#"><img src="icon.png" style="max-width: 25px; max-width: 25px;"></a></li>
           <li class="active"><a href="#manual">Manual</a></li>
           <li><a href="#definicoes">Definições</a></li>
-          <li><a href="#historia_diferencial">Hist. Diferencial</a></li>
+          <li><a href="#historia_dif_deriv">Hist. Calc. Dif. e Derivada</a></li>
           <li><a href="#historia_integral">Hist. Integral</a></li>
         </ul>
       </div>
@@ -127,6 +127,10 @@
           <h4>Constantes</h4>
           <p><b>e</b> --> E</p>
           <p><b>π</b> --> pi</p>
+          <hr>
+          <h4>Simbolos</h4>
+          <p><b>+00</b> --> 00 ou +00</p>
+          <p><b>-00</b> --> -00</p>
           <hr>
           <h4>Polinomial</h4>
           <p><b>x⁵</b> --> <i>x⁵</i> ou <i>x**5</i> ou <i>x^5</i></p>
@@ -160,6 +164,49 @@
                                                                     <br> log(x**5-2**(tg(-x-1)))+ln(x**4-5)-2*x**3+5*x**2-sen(x)+sqrt(2) ou
                                                                     <br> log(x**5-2**(tg(-x-1)))+ln(x**4-5)-2*x**3+5*x**2-sen(x)+√(2)</p>
           <hr>
+          <h4>Alguns exemplos do funcionamento</h4>
+          <p>Usemos a função x² como exemplo:</p>
+          <h5>Gráfico da função f(x)</h5>
+          <div class="center">
+            <img src="img/programa/01.png" alt="f(x)" class="center" style="max-width: 350px; max-height: 350px;">
+          </div>
+            <h5>Gráfico da função f(x) com reta tangente no ponto (1.258, 1.658)</h5>
+            <div class="center">
+              <img src="img/programa/02.png" alt="f(x)" class="center" style="max-width: 350px; max-height: 350px;">
+            </div>
+            <h5>Gráfico da função derivada f'(x) de f(x)</h5>
+            <div class="center">
+              <img src="img/programa/03.png" alt="f(x)" class="center" style="max-width: 350px; max-height: 350px;">
+            </div>
+              <h5>Gráfico da função da segunda derivada f''(x) de f(x) (f''(x) é o Ponto y=2)</h5>
+              <div class="center">
+                <img src="img/programa/04.png" alt="f(x)" class="center" style="max-width: 350px; max-height: 350px;">
+              </div>
+              <h5>Expressão da primitiva ou integral indefinida de f(x)</h5>
+              <div class="center">
+                <img src="img/programa/05.png" alt="f(x)" class="center" style="max-width: 350px; max-height: 350px;">
+              </div>      
+              <h5>Grafico da integral definida de f(x) em 'a = 0' e 'b = 5'</h5>
+              <div class="center">
+                <img src="img/programa/06.png" alt="f(x)" class="center" style="max-width: 350px; max-height: 350px;">
+              </div>
+              <h5>Valor da integral imprópria de f(x) em 'a = -00' e 'b = 2'</h5>
+              <div class="center">
+                <img src="img/programa/07.png" alt="f(x)" class="center" style="max-width: 350px; max-height: 350px;">
+              </div>      
+              <h5>Minimos e máximos de f(x)</h5>
+              <div class="center">
+                <img src="img/programa/08.png" alt="f(x)" class="center" style="max-width: 350px; max-height: 350px;">
+              </div>      
+              <h5>Valor do limite de f(x) quando x->+00</h5>
+              <div class="center">
+                <img src="img/programa/09.png" alt="f(x)" class="center" style="max-width: 350px; max-height: 350px;">
+              </div>      
+              <h5>Zeros de f(x)</h5>
+              <div class="center">
+                <img src="img/programa/10.png" alt="f(x)" class="center" style="max-width: 350px; max-height: 350px;">
+              </div>      
+          <hr>
       </section>
       <section id="definicoes">
         <h2>Algumas definições</h2>
@@ -176,12 +223,12 @@
           <p>Integral muito semelhante em termos de representação à integral definida, mas com um dos seus limites a tender para -00 ou +00, existindo assim apenas um deles a apontar para um valor numérico direto.</p>
           <hr>
       </section>
-      <section id="historia_diferencial">
+      <section id="historia_dif_deriv">
         <div style="float:right; max-width: 150px; max-height: 250px;">
           <img src="img/people/ibnAl-Haytham.png" alt="Alhazen Ḥasan Ibn al-Haytham" style="max-width: 150px; max-height: 250px;">
           <i style="vertical-align: middle;">Alhazen Ḥasan Ibn al-Haytham</i>
         </div>
-        <h2>História do Cálculo Diferencial</h2>
+        <h2>História do Cálculo Diferencial e da Derivada</h2>
         <h4>Introdução</h4>
         <p>O problema de encontrar a tangente de uma curva foi estudado por vários matemáticos, dos quais se destacam Arquimedes de Siracusa, Zu Chongzhi no período chinês dos Três Reinos, Alhazen Ḥasan Ibn al-Haytham na Renascença Árabe, a matemáticos do século XVII como Newton e Leibniz. A primeira tentativa efectuada de determinar a tangente de uma curva semelhante à metodologia moderna de Cálculo, veio de Gilles Persone de Roberval, na década de 1630 a 1640, no entanto, quase na mesma altura em que Roberval desenvolvia o seu método, Pierre de Fermat usou a noção de "máxima" e de "infinitesimal" para encontrar a tangente de uma curva. Alguns historiadores creditam assim Fermat com a descoberta da derivada, mas não foi, no entanto, até Leibniz e Newton terem rigorosamente definido o seu método de tangentes, que uma técnica generalizada tornou-se amplamente aceite.</p>
         <hr>
