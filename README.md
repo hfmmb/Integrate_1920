@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src=""./icon.png"" alt="Integrate logo"/>
+  <img src="https://github.com/hfmmb/Integrate_1920/blob/master/icon.png" alt="Integrate logo"/>
 </p>
 
 # Integrate - Derivação e Integração
