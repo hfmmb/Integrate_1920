@@ -1,4 +1,5 @@
-![Integrate](icon.png)
+
+<div style="text-align:center"><img src="./icon.png" /></div>
 # Integrate - Derivação e Integração
 
 Programa que permite resolver e mostrar graficos de funções derivadas e integrais
