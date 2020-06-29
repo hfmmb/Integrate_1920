@@ -10,13 +10,40 @@ class Diferencial(object):
     def __init__(self):
         self.handler = StringHandler()
 
-    def plotIntegralDefinida(self, funcao, a=1e-32 , b=None, plot_eixo_x_limites=(0, 20), plot_eixo_y_limites=(0, 20)):
-        #Ajusta o eixo x minimo no grafico
-        if(plot_eixo_x_limites[0] < 0):
-            plot_eixo_x_limites[0] = 0
-        #Ajusta o eixo y minimo no grafico
-        if(plot_eixo_y_limites[0] < 0):
-            plot_eixo_y_limites[0] = 0
+    def plotIntegralDefinida(self, funcao, plot_eixo_x_limites, plot_eixo_y_limites, a=1e-32 , b=1.0):
+        """
+        Mostra o grafico da integral definida dado um limite a e b
+
+        Args:
+            funcao (string): Função da integral definida
+            plot_eixo_x_limites (List): xmin e xmax do grafico da integral
+            plot_eixo_y_limites (List): ymin e ymax do grafico da integral
+            a (float, optional): [description]. Defaults to 1e-32.
+            b (float, optional): [description]. Defaults to 1.0.
+        """
+        try:
+            plot_eixo_x_limites = [float(plot_eixo_x_limites[0]), float(plot_eixo_x_limites[1])]
+            plot_eixo_y_limites = [float(plot_eixo_y_limites[0]), float(plot_eixo_y_limites[1])]
+        except ValueError as error:
+            print("ERRO! Os valores introduzidos para os eixos do grafico da integral definida são inválidos!\n\n" + str(error))
+
+        if plot_eixo_x_limites[1] < 0:
+            if b < 0:
+                b = b * -1
+            elif b == 0:
+                b = 1
+            plot_eixo_x_limites[1] = plot_eixo_x_limites[0] + b
+
+        if plot_eixo_x_limites[0] == plot_eixo_x_limites[1]:
+            plot_eixo_x_limites[1] = plot_eixo_x_limites[0] + 1
+
+        if plot_eixo_y_limites[0] == plot_eixo_y_limites[1]:
+            plot_eixo_y_limites[1] = plot_eixo_y_limites[0] + 1
+
+        elif plot_eixo_y_limites[1] < plot_eixo_y_limites[0]:
+            aux = plot_eixo_y_limites[1]
+            plot_eixo_y_limites[1] = plot_eixo_y_limites[0]
+            plot_eixo_y_limites[0] = aux
 
         x = s.symbols("x")
         funcao = s.sympify(funcao)
@@ -30,10 +57,10 @@ class Diferencial(object):
         iq = np.linspace(a, b)
         iw = w(iq)
         verts = [(a, 0), *zip(iq, iw), (b, 0)]
-        poly = mt.patches.Polygon(verts, color='darkorange', edgecolor='black')
+        poly = mt.patches.Polygon(verts, color='darkorange')
         aq.add_patch(poly)
 
-        aq.text(0.5 * (a + b), 30, r"$\int_a^b f(q)\mathrm{d}q$",
+        aq.text(0.5 * (a + b), 10, r"$\int_a^b f(x)\mathrm{d}x$",
                 horizontalalignment='center', fontsize=20)
 
         aq.xaxis.set_ticks_position('bottom')

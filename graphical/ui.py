@@ -45,7 +45,7 @@ class UI(Frame):
         fonte = Font(family="Helvetica", size=18)
 
         #Frame input função
-        funcao_text = "x³/(x² + sqrt(15))"
+        funcao_text = "x³"
         self.frame_master_row = Frame(master=self.master,
                                       highlightbackground="black",
                                       highlightthickness=2)
@@ -463,39 +463,7 @@ class UI(Frame):
 
                 #Integral com intervalos (definida)
                 elif cb_index == 4:
-
-                    valor_inferior, valor_superior = str(self.tbx_input_inferior.get("1.0", END)).strip('\n'), str(self.tbx_input_superior.get("1.0", END)).strip('\n')
-                    if len(valor_inferior) > 0 and len(valor_superior) > 0:
-                        try:
-                            valor_inferior = float(valor_inferior)
-
-                            valor_superior = float(valor_superior)
-
-                            if valor_inferior > valor_superior:
-                                aux = valor_superior
-                                valor_superior = valor_inferior
-                                valor_inferior = aux
-
-                            if valor_inferior < 0:
-                                valor_inferior = 0
-
-                        except ValueError as error:
-                            messagebox.showerror("Erro!", "Apenas numeros são permitidos!\n\n" + str(error))
-
-                        try:
-                            valor = d.Intergral_Valor(funcao, valor_inferior, valor_superior)
-
-                            messagebox.showinfo("Resultado Integral!", "Valor: " + str(valor))
-                        except Exception as error:
-                            messagebox.showerror("Erro!", "Não foi possivel calcular o valor da integral dada no intervalo de limites [" + str(valor_inferior) + ", " + str(valor_superior)+"]!\n\n" + str(error))
-
-                        try:
-                            d.plotIntegralDefinida(funcao, valor_inferior, valor_superior)
-                        except Exception as error:
-                            messagebox.showerror("Erro!", "Não foi possivel mostrar o grafico da integral de valores [" + str(valor_inferior) + ", " + str(valor_superior) + "]!\n\n" + str(error))
-
-                    else:
-                        messagebox.showerror("Erro!", "Preencha os campos de valores inferior e superior!")
+                    self.__integral_definida_handler(funcao)
 
                 #Integrais Impróprias (Valor)
                 elif cb_index == 5:
@@ -959,3 +927,65 @@ class UI(Frame):
 
         else:
             d.retaTangentePonto(funcao, legenda=legenda, plot_eixo_x_limites=(min_x, max_x), plot_eixo_y_limites=(min_y, max_y))
+
+    def __integral_definida_handler(self, funcao):
+        """
+        Mostra o grafíco da integral definida e standardiza as coordenadas da mesma
+        Args:
+            funcao (string): Função a processar
+        """
+        graph_range_x = [self.tbx_min_x.get("1.0", END).strip('\n'), self.tbx_max_x.get("1.0", END).strip('\n')]
+        graph_range_y = [self.tbx_min_y.get("1.0", END).strip('\n'), self.tbx_max_y.get("1.0", END).strip('\n')]
+
+        if len(graph_range_x[0]) <= 0:
+            graph_range_x[0] = '0'
+
+        if len(graph_range_x[1]) <= 0:
+            graph_range_x[1] = '20'
+
+        if len(graph_range_y[0]) <= 0:
+            graph_range_y[0] = '0'
+
+        if len(graph_range_y[1]) <= 0:
+            graph_range_y[1] = '20'
+
+        dif_handler = Diferencial()
+
+        valor_inferior, valor_superior = str(self.tbx_input_inferior.get("1.0", END)).strip('\n'), str(self.tbx_input_superior.get("1.0", END)).strip('\n')
+        if len(valor_inferior) > 0 and len(valor_superior) > 0:
+            try:
+                valor_inferior = float(valor_inferior)
+
+                valor_superior = float(valor_superior)
+
+                if valor_inferior > valor_superior:
+                    aux = valor_superior
+                    valor_superior = valor_inferior
+                    valor_inferior = aux
+
+                if valor_inferior < 0:
+                    valor_inferior = 0
+
+            except ValueError as error:
+                messagebox.showerror("Erro!", "Apenas numeros são permitidos!\n\n" + str(error))
+
+            flag = False
+            #Tenta calcular o valor aproximado da integral
+            try:
+                valor = dif_handler.Intergral_Valor(funcao, valor_inferior, valor_superior)
+                flag = True
+            except Exception as error:
+                messagebox.showerror("Erro!", "Não foi possivel calcular o valor da integral dada no intervalo de limites [" + str(valor_inferior) + ", " + str(valor_superior)+"]!\n\n" + str(error))
+
+            #Tenta criar o grafico da integral
+            try:
+                dif_handler.plotIntegralDefinida(funcao, graph_range_x, graph_range_y, valor_inferior, valor_superior, )
+            except Exception as error:
+                messagebox.showerror("Erro!", "Não foi possivel mostrar o grafico da integral de valores [" + str(valor_inferior) + ", " + str(valor_superior) + "]!\n\n" + str(error))
+            
+            #Mostra valor da integral definida se foi possivel calcula-la
+            if flag:
+                messagebox.showinfo("Resultado Integral Definida", "Valor: " + str(valor))
+
+        else:
+            messagebox.showerror("Erro!", "Preencha os campos de valores inferior e superior!")
