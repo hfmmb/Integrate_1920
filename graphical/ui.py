@@ -977,15 +977,14 @@ class UI(Frame):
             except Exception as error:
                 messagebox.showerror("Erro!", "Não foi possivel calcular o valor da integral dada no intervalo de limites [" + str(valor_inferior) + ", " + str(valor_superior)+"]!\n\n" + str(error))
 
+            #Mostra valor da integral definida se foi possivel calcula-la
+            if flag:
+                messagebox.showinfo("Resultado Integral Definida", "Valor: " + str(valor))
+
             #Tenta criar o grafico da integral
             try:
                 dif_handler.plotIntegralDefinida(funcao, graph_range_x, graph_range_y, valor_inferior, valor_superior, )
             except Exception as error:
                 messagebox.showerror("Erro!", "Não foi possivel mostrar o grafico da integral de valores [" + str(valor_inferior) + ", " + str(valor_superior) + "]!\n\n" + str(error))
-            
-            #Mostra valor da integral definida se foi possivel calcula-la
-            if flag:
-                messagebox.showinfo("Resultado Integral Definida", "Valor: " + str(valor))
-
         else:
             messagebox.showerror("Erro!", "Preencha os campos de valores inferior e superior!")
