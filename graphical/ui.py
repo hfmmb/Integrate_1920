@@ -986,7 +986,10 @@ class UI(Frame):
                 dif_handler.plotIntegralDefinida(funcao, graph_range_x, graph_range_y, valor_inferior, valor_superior, )
             except Exception as error:
                 messagebox.showerror("Erro!", "Não foi possivel mostrar o grafico da integral de valores [" + str(valor_inferior) + ", " + str(valor_superior) + "]!\n\n" + str(error))
+<<<<<<< HEAD
             messagebox.showinfo("Resultado Integral Definida", "Valor: " + str(valor))
 
+=======
+>>>>>>> ebedc35044e7908937b6a4a508d2b759ad934390
         else:
             messagebox.showerror("Erro!", "Preencha os campos de valores inferior e superior!")
